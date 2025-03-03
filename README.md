@@ -30,10 +30,16 @@ nvm use
 
 ### Setup
 
-Install application dependencies:
+Install application dependencies
 
 ```bash
 npm install
+```
+
+Start project microservices under test
+
+```bash
+docker-compose -f docker-compose-local.yml up
 ```
 
 ### Running local tests

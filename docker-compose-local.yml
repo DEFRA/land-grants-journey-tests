@@ -1,0 +1,183 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:7.0.7
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=my-password
+      - REDIS_PORT=6379
+    networks:
+      - cdpuploader
+
+  redisinsight:
+    image: redislabs/redisinsight:latest
+    ports:
+      - "5540:5540"
+    volumes:
+      - redisinsight:/data
+    depends_on:
+      - redis
+    networks:
+      - cdpuploader
+
+  localstack:
+    image: localstack/localstack:3.0.2
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    env_file:
+      - ./compose/aws.env
+    environment:
+      DEBUG: "1"
+      LS_LOG: WARN
+      SERVICES: s3,sqs,sns,firehose
+      LOCALSTACK_HOST: 127.0.0.1
+    volumes:
+      - "${TMPDIR:-/tmp}/localstack:/var/lib/localstack"
+      - ./compose/start-localstack.sh:/etc/localstack/init/ready.d/start-localstack.sh:ro
+    command: >
+      sh -c "
+      echo 'Setting up LocalStack resources...';
+      /etc/localstack/init/ready.d/start-localstack.sh;
+      exec localstack
+      "
+    healthcheck:
+      test: ["CMD", "curl", "localhost:4566"]
+      interval: 5s
+      start_period: 5s
+      retries: 3
+    networks:
+      cdpuploader:
+        ipv4_address: 10.0.2.20
+
+  cdp-uploader:
+    image: defradigital/cdp-uploader:${CDP_UPLOADER_VERSION:-latest}
+    ports:
+      - "127.0.0.1:7337:7337"
+    links:
+      - "localstack:localstack"
+      - "redis:redis"
+    depends_on:
+      localstack:
+        condition: service_healthy
+    env_file:
+      - ./compose/aws.env
+    environment:
+      VIRTUAL_HOST: ~^uploader\..*\.sslip\.io
+      VIRTUAL_PATH: /
+      VIRTUAL_PORT: 7337
+      PORT: 7337
+      NODE_ENV: development
+      REDIS_HOST: redis
+      LOCALSTACK_ENDPOINT: http://localhost.localstack.cloud:4566
+      S3_ENDPOINT: http://localhost.localstack.cloud:4566
+      SQS_ENDPOINT: http://localhost.localstack.cloud:4566
+      USE_SINGLE_INSTANCE_CACHE: true
+      MOCK_VIRUS_SCAN_ENABLED: true
+      MOCK_VIRUS_RESULT_DELAY: 3
+    dns:
+      - 10.0.2.20
+    networks:
+      - cdpuploader
+
+  land-grants-api:
+    image: land-grants-api:development
+    depends_on:
+      - mongo
+    environment:
+      - PORT=3000
+      - PORT_DEBUG=9229
+      - MONGO_URI=mongodb://root:example@mongo:27017
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+    networks:
+      - cdpuploader
+
+  farming-grants-agreements-api:
+    image: farming-grants-agreements-api:development
+    depends_on:
+      - mongo
+    environment:
+      - PORT=3001
+      - PORT_DEBUG=9230
+      - MONGO_URI=mongodb://root:example@mongo:27017
+    ports:
+      - "3001:3001"
+      - "9230:9230"
+    networks:
+      - cdpuploader
+
+  land-grants-ui:
+    image: land-grants-ui:development
+    depends_on:
+      - land-grants-api
+      - farming-grants-agreements-api
+    environment:
+      - PORT=3002
+      - PORT_DEBUG=9231
+      - API_BASE_URL=http://land-grants-api:3000
+    ports:
+      - "3002:3002"
+      - "9231:9231"
+    networks:
+      - cdpuploader
+
+  forms-runner-v2:
+    image: forms-runner:development
+    depends_on:
+      - redis
+      - localstack
+      - cdp-uploader
+      - land-grants-ui
+    env_file:
+      - ./compose/aws.env
+    environment:
+      - PORT=3003
+      - PORT_DEBUG=9232
+      - REDIS_HOST=redis
+      - LOCALSTACK_ENDPOINT=http://localhost.localstack.cloud:4566
+      - FEEDBACK_LINK="http://example.com/feedback"
+      - SESSION_COOKIE_PASSWORD="super-secret-cookie-password"
+      - NOTIFY_TEMPLATE_ID="12345678-1234-5678-1234-567812345678"
+      - NOTIFY_API_KEY="notify-api-key-here"
+      - MANAGER_URL="http://example.com/manager"
+      - DESIGNER_URL="http://example.com/designer"
+      - SUBMISSION_URL="http://example.com/submission"
+      - UPLOADER_URL="http://cdp-uploader:7337"
+      - REDIS_USERNAME="default"
+      - REDIS_KEY_PREFIX="forms-runner:"
+    ports:
+      - "3003:3003"
+      - "9232:9232"
+    command: ["npm", "start"]
+    networks:
+      - cdpuploader
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - cdpuploader
+
+volumes:
+  redisinsight:
+  mongo-data:
+
+networks:
+  cdpuploader:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24
