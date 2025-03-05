@@ -1,88 +1,6 @@
 version: "3.8"
 
 services:
-  redis:
-    image: redis:7.0.7
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    environment:
-      - REDIS_PASSWORD=my-password
-      - REDIS_PORT=6379
-    networks:
-      - cdpuploader
-
-  redisinsight:
-    image: redislabs/redisinsight:latest
-    ports:
-      - "5540:5540"
-    volumes:
-      - redisinsight:/data
-    depends_on:
-      - redis
-    networks:
-      - cdpuploader
-
-  localstack:
-    image: localstack/localstack:3.0.2
-    ports:
-      - "127.0.0.1:4566:4566"
-      - "127.0.0.1:4510-4559:4510-4559"
-    env_file:
-      - ./compose/aws.env
-    environment:
-      DEBUG: "1"
-      LS_LOG: WARN
-      SERVICES: s3,sqs,sns,firehose
-      LOCALSTACK_HOST: 127.0.0.1
-    volumes:
-      - "${TMPDIR:-/tmp}/localstack:/var/lib/localstack"
-      - ./compose/start-localstack.sh:/etc/localstack/init/ready.d/start-localstack.sh:ro
-    command: >
-      sh -c "
-      echo 'Setting up LocalStack resources...';
-      /etc/localstack/init/ready.d/start-localstack.sh;
-      exec localstack
-      "
-    healthcheck:
-      test: ["CMD", "curl", "localhost:4566"]
-      interval: 5s
-      start_period: 5s
-      retries: 3
-    networks:
-      cdpuploader:
-        ipv4_address: 10.0.2.20
-
-  cdp-uploader:
-    image: defradigital/cdp-uploader:${CDP_UPLOADER_VERSION:-latest}
-    ports:
-      - "127.0.0.1:7337:7337"
-    links:
-      - "localstack:localstack"
-      - "redis:redis"
-    depends_on:
-      localstack:
-        condition: service_healthy
-    env_file:
-      - ./compose/aws.env
-    environment:
-      VIRTUAL_HOST: ~^uploader\..*\.sslip\.io
-      VIRTUAL_PATH: /
-      VIRTUAL_PORT: 7337
-      PORT: 7337
-      NODE_ENV: development
-      REDIS_HOST: redis
-      LOCALSTACK_ENDPOINT: http://localhost.localstack.cloud:4566
-      S3_ENDPOINT: http://localhost.localstack.cloud:4566
-      SQS_ENDPOINT: http://localhost.localstack.cloud:4566
-      USE_SINGLE_INSTANCE_CACHE: true
-      MOCK_VIRUS_SCAN_ENABLED: true
-      MOCK_VIRUS_RESULT_DELAY: 3
-    dns:
-      - 10.0.2.20
-    networks:
-      - cdpuploader
-
   land-grants-api:
     image: land-grants-api:development
     depends_on:
@@ -126,34 +44,18 @@ services:
     networks:
       - cdpuploader
 
-  forms-runner-v2:
-    image: forms-runner:development
+  farming-grants-ui:
+    image: farming-grants-ui:development
     depends_on:
-      - redis
-      - localstack
-      - cdp-uploader
-      - land-grants-ui
-    env_file:
-      - ./compose/aws.env
+      - farming-grants-agreements-api
+      - land-grants-api
     environment:
-      - PORT=3003
-      - PORT_DEBUG=9232
-      - REDIS_HOST=redis
-      - LOCALSTACK_ENDPOINT=http://localhost.localstack.cloud:4566
-      - FEEDBACK_LINK="http://example.com/feedback"
-      - SESSION_COOKIE_PASSWORD="super-secret-cookie-password"
-      - NOTIFY_TEMPLATE_ID="12345678-1234-5678-1234-567812345678"
-      - NOTIFY_API_KEY="notify-api-key-here"
-      - MANAGER_URL="http://example.com/manager"
-      - DESIGNER_URL="http://example.com/designer"
-      - SUBMISSION_URL="http://example.com/submission"
-      - UPLOADER_URL="http://cdp-uploader:7337"
-      - REDIS_USERNAME="default"
-      - REDIS_KEY_PREFIX="forms-runner:"
+      - PORT=3004
+      - PORT_DEBUG=9233
+      - API_BASE_URL=http://farming-grants-agreements-api:3001
     ports:
-      - "3003:3003"
-      - "9232:9232"
-    command: ["npm", "start"]
+      - "3004:3004"
+      - "9233:9233"
     networks:
       - cdpuploader
 
