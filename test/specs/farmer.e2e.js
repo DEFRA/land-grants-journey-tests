@@ -12,7 +12,7 @@ describe('Given farmer is eligible for funding', () => {
     const parcel = 'SX0679-9238'
     const action = 'CSAM1'
     const area = 1
-    const totalApplicationValue = '£16,467.49'
+    const totalApplicationValue = '£100.98'
     it('Then the farmer is shown the landing page', async () => {
       await HomePage.open()
       await expect(browser).toHaveTitle(
