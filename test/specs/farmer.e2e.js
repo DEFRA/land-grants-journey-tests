@@ -10,7 +10,7 @@ import * as assert from 'node:assert'
 describe('Given farmer is eligible for funding', () => {
   describe('When farmer goes through the land grands application', () => {
     const parcel = 'SX0679-9238'
-    const action = 'CSAM1'
+    const action = 'CMOR1'
     const area = 1
     const totalApplicationValue = '£100.98'
     it('Then the farmer is shown the landing page', async () => {
@@ -51,18 +51,25 @@ describe('Given farmer is eligible for funding', () => {
       await LandParcelsPage.clickButton('Continue')
 
       await expect(browser).toHaveTitle(
-        `Funding details - Find Funding for Land or Farms - GOV.UK`
-      )
-      assert.equal(
-        await FundingDetailsPage.getActionName(),
-        action,
-        `Expected Action name ${action} is not present`
+        `Funding Details - Find Funding for Land or Farms - GOV.UK`
       )
 
       assert.equal(
-        await FundingDetailsPage.getTotalApplicationValue(),
+        await FundingDetailsPage.getFundingDetailsValue('Parcel'),
+        parcel,
+        `Expected parcel ${parcel} is not present`
+      )
+      assert.equal(
+        await FundingDetailsPage.getFundingDetailsValue('Actions'),
+        action,
+        `Expected action ${action} is not present`
+      )
+      assert.equal(
+        await FundingDetailsPage.getFundingDetailsValue(
+          'Total Application Value'
+        ),
         totalApplicationValue,
-        `Expected total application value ${totalApplicationValue} is not present`
+        `Expected area ${totalApplicationValue} is not present`
       )
     })
   })

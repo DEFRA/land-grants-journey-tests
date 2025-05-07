@@ -9,12 +9,8 @@ class FundingDetailsPage extends Page {
     return await valueElement.getText()
   }
 
-  async getActionName() {
-    return await this.getValueByKey('Actions')
-  }
-
-  async getTotalApplicationValue() {
-    return await this.getValueByKey('Total Application Value')
+  async getFundingDetailsValue(key) {
+    return await this.getValueByKey(key)
   }
 }
 
