@@ -4,7 +4,7 @@ class ActionsPage extends Page {
   async selectRequiredAction(actionName, quantity) {
     const checkbox = await $(`input[type='checkbox'][value='${actionName}']`)
     await checkbox.click()
-    const quantityInput = await $(`input[id='area-1']`)
+    const quantityInput = await $(`input[name='area-${actionName}']`)
     await quantityInput.setValue(quantity)
   }
 }
