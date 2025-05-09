@@ -5,54 +5,55 @@ import knockoutQuestionsPage from 'page-objects/knockout.questions.page.js'
 import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import ActionsPage from 'page-objects/actions.page.js'
 import FundingDetailsPage from 'page-objects/funding.details.page.js'
+import AgreementNamePage from 'page-objects/agreement.name.page.js'
+import { SERVICE_NAME } from '~/test/utils/config.js'
 import * as assert from 'node:assert'
 
 describe('Given farmer is eligible for funding', () => {
   describe('When farmer goes through the land grands application', () => {
     const parcel = 'SX0679-9238'
+    const agreementName = 'Test Agreement'
     const action = 'CMOR1'
     const area = 1
     const totalApplicationValue = '£100.98'
     it('Then the farmer is shown the landing page', async () => {
       await HomePage.open()
-      await expect(browser).toHaveTitle(
-        'Start page - Find Funding for Land or Farms - GOV.UK'
-      )
+      await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)
     })
 
     it('Then the farmer is shown the eligibility questions', async () => {
       await HomePage.clickButton('Start now')
 
       await expect(browser).toHaveTitle(
-        `Do your digital maps show the correct land details? - Find Funding for Land or Farms - GOV.UK`
+        `Do your digital maps show the correct land details? | ${SERVICE_NAME}`
+      )
+    })
+
+    it('Then the farmer is asked to enter agreement name', async () => {
+      await knockoutQuestionsPage.selectRadioButtonByValue('true')
+      await knockoutQuestionsPage.clickButton('Continue')
+      await expect(browser).toHaveTitle(
+        `Enter your agreement name | ${SERVICE_NAME}`
       )
     })
 
     it('Then the farmer is shown the land parcels for this application', async () => {
-      await knockoutQuestionsPage.selectRadioButtonByValue('true')
-      await knockoutQuestionsPage.clickButton('Continue')
-
-      await expect(browser).toHaveTitle(
-        `Select Land Parcel - Find Funding for Land or Farms - GOV.UK`
-      )
+      await AgreementNamePage.enterAgreementName(agreementName)
+      await AgreementNamePage.clickButton('Continue')
+      await expect(browser).toHaveTitle(`Select Land Parcel | ${SERVICE_NAME}`)
     })
 
     it('Then the farmer has option to select the action for the land parcel', async () => {
       await LandParcelsPage.selectRadioButtonByValue(parcel)
       await LandParcelsPage.clickButton('Continue')
-
-      await expect(browser).toHaveTitle(
-        `Select Land Actions - Find Funding for Land or Farms - GOV.UK`
-      )
+      await expect(browser).toHaveTitle(`Select Land Actions | ${SERVICE_NAME}`)
     })
 
     it('Then the farmer is shown the funding summary for the selected action on the land parcel', async () => {
       await ActionsPage.selectRequiredAction(action, area)
       await LandParcelsPage.clickButton('Continue')
 
-      await expect(browser).toHaveTitle(
-        `Funding Details - Find Funding for Land or Farms - GOV.UK`
-      )
+      await expect(browser).toHaveTitle(`Funding details | ${SERVICE_NAME}`)
 
       assert.equal(
         await FundingDetailsPage.getFundingDetailsValue('Parcel'),
@@ -65,8 +66,13 @@ describe('Given farmer is eligible for funding', () => {
         `Expected action ${action} is not present`
       )
       assert.equal(
+        await FundingDetailsPage.getFundingDetailsValue('Agreement name'),
+        agreementName,
+        `Expected parcel ${agreementName} is not present`
+      )
+      assert.equal(
         await FundingDetailsPage.getFundingDetailsValue(
-          'Total Application Value'
+          'Total application value'
         ),
         totalApplicationValue,
         `Expected area ${totalApplicationValue} is not present`
