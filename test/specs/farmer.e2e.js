@@ -62,7 +62,7 @@ describe('Given farmer is eligible for funding', () => {
       )
       assert.equal(
         await FundingDetailsPage.getFundingDetailsValue('Actions'),
-        action,
+        `${action}: ${area} ha.`,
         `Expected action ${action} is not present`
       )
       assert.equal(
