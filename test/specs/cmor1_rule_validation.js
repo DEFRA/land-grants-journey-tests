@@ -6,6 +6,11 @@ import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import ActionsPage from 'page-objects/actions.page.js'
 import AgreementNamePage from 'page-objects/agreement.name.page.js'
 
+afterEach(async () => {
+  // Clear all cookies after each test
+  await browser.deleteCookies()
+})
+
 describe('CMOR1 action - area applied for is not the total available area in the land parcel', () => {
   describe('Given farmer is eligible for funding', () => {
     it('When farmer selects land parcel but area applied for is not the total available area of land parcel', async () => {
