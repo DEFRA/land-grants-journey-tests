@@ -6,6 +6,7 @@ import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import ActionsPage from 'page-objects/actions.page.js'
 import FundingDetailsPage from 'page-objects/funding.details.page.js'
 import AgreementNamePage from 'page-objects/agreement.name.page.js'
+import AddMoreActionsPage from 'page-objects/add.more.actions.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
 import * as assert from 'node:assert'
 
@@ -61,8 +62,10 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
           `Check selected land actions | ${SERVICE_NAME}`
         )
       })
+
       it('Then the farmer is shown the funding summary for the selected action on the land parcel', async () => {
-        await LandParcelsPage.clickButton('Continue')
+        await AddMoreActionsPage.selectRadioButtonByValue('false')
+        await AddMoreActionsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(`Funding details | ${SERVICE_NAME}`)
 
         assert.equal(
