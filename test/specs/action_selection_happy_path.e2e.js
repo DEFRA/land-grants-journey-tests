@@ -75,7 +75,7 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
         )
         assert.equal(
           await FundingDetailsPage.getFundingDetailsValue('Actions'),
-          `${action}: ${area} .`,
+          `${action}: ${area} sqm.`,
           `Expected action ${action} is not present`
         )
         assert.equal(
