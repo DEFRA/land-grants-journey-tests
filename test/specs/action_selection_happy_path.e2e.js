@@ -51,7 +51,7 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
         await LandParcelsPage.selectRadioButtonByValue(parcel)
         await LandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
-          `Select Land Actions | ${SERVICE_NAME}`
+          `Choose which actions to do | ${SERVICE_NAME}`
         )
       })
 
