@@ -22,7 +22,7 @@ describe('CMOR1 action - area applied for is not the total available area in the
       await performActionSelection(agreementName, parcel, action, area)
       it('Then the appropriate error message is show for area applied', async () => {})
       const errorMessage =
-        'Area applied for (75712.9ha) does not match parcel area (10ha)'
+        'CMOR1: Area applied for (10 ha.) does not match parcel area (75712.9 ha.)'
       await expect(await ActionsPage.getErrorMessage()).toContain(errorMessage)
     })
   })
