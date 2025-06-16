@@ -59,7 +59,7 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
         await ActionsPage.selectRequiredAction(action, area)
         await LandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
-          `Check selected land actions | ${SERVICE_NAME}`
+          `You have selected 1 action to 1 parcel | ${SERVICE_NAME}`
         )
       })
 
@@ -75,7 +75,7 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
         )
         assert.equal(
           await FundingDetailsPage.getFundingDetailsValue('Actions'),
-          `${action}: ${area} ha.`,
+          `${action}: ${area} ha`,
           `Expected action ${action} is not present`
         )
         assert.equal(
