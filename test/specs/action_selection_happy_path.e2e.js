@@ -16,7 +16,7 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
       const parcel = 'SD6743-8083'
       const agreementName = 'Test Agreement'
       const action = 'CMOR1'
-      const area = 45341.11
+      const area = 4.5341
       const totalApplicationValue = '£100.98'
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
@@ -75,7 +75,7 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
         )
         assert.equal(
           await FundingDetailsPage.getFundingDetailsValue('Actions'),
-          `${action}: ${area} sqm.`,
+          `${action}: ${area} ha.`,
           `Expected action ${action} is not present`
         )
         assert.equal(
