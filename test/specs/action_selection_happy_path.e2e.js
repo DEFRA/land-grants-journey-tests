@@ -4,11 +4,10 @@ import HomePage from 'page-objects/home.page.js'
 import knockoutQuestionsPage from 'page-objects/knockout.questions.page.js'
 import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import ActionsPage from 'page-objects/actions.page.js'
-import FundingDetailsPage from 'page-objects/funding.details.page.js'
+import CheckYourAnswersPage from 'page-objects/check.your.answers.page.js'
 import AgreementNamePage from 'page-objects/agreement.name.page.js'
 import AddMoreActionsPage from 'page-objects/add.more.actions.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
-import * as assert from 'node:assert'
 
 describe('Happy Path scenario for CMOR1 action selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -16,7 +15,7 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
       const parcel = 'SD6743-8083'
       const agreementName = 'Test Agreement'
       const action = 'CMOR1'
-      const area = 4.5341
+      const area = 4.53411065
       const totalApplicationValue = '£100.98'
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
@@ -66,30 +65,24 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
       it('Then the farmer is shown the funding summary for the selected action on the land parcel', async () => {
         await AddMoreActionsPage.selectRadioButtonByValue('false')
         await AddMoreActionsPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(`Funding details | ${SERVICE_NAME}`)
+        await expect(browser).toHaveTitle(
+          `Check your answers before sending your application | ${SERVICE_NAME}`
+        )
 
-        assert.equal(
-          await FundingDetailsPage.getFundingDetailsValue('Parcel'),
-          parcel,
-          `Expected parcel ${parcel} is not present`
-        )
-        assert.equal(
-          await FundingDetailsPage.getFundingDetailsValue('Actions'),
-          `${action}: ${area} ha`,
-          `Expected action ${action} is not present`
-        )
-        assert.equal(
-          await FundingDetailsPage.getFundingDetailsValue('Agreement name'),
-          agreementName,
-          `Expected parcel ${agreementName} is not present`
-        )
-        assert.equal(
-          await FundingDetailsPage.getFundingDetailsValue(
-            'Total application value'
-          ),
-          totalApplicationValue,
-          `Expected area ${totalApplicationValue} is not present`
-        )
+        await expect(
+          await CheckYourAnswersPage.getValueFor('Agreement name')
+        ).toContain(agreementName)
+        await expect(
+          await CheckYourAnswersPage.getValueFor(
+            'Indicative annual payment (excluding management payment)'
+          )
+        ).toContain(totalApplicationValue)
+        await expect(
+          await CheckYourAnswersPage.getValueForParcelBasedActions(parcel)
+        ).toContain(`CMOR1: Assess moorland and produce a written record`)
+        await expect(
+          await CheckYourAnswersPage.getValueForParcelBasedActions(parcel)
+        ).toContain(`Applied area: ${area} ha`)
       })
     })
   })
