@@ -9,13 +9,16 @@ import AgreementNamePage from 'page-objects/agreement.name.page.js'
 import AddMoreActionsPage from 'page-objects/add.more.actions.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
 
-describe('Happy Path scenario for CMOR1 action selection and funding details verification', () => {
+describe('Multiple actions selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
-      const parcel = 'SD6743-8083'
-      const agreementName = 'Test Agreement'
-      const action = 'CMOR1'
-      const area = 4.53411065
+      const agreementName = 'Multi Action Agreement'
+      const parcelOne = 'SD6743-8083'
+      const actionOne = 'CMOR1'
+      const areaOne = 4.53411065
+      const parcelTwo = 'SD6943-0882'
+      const actionTwo = 'UPL2'
+      const areaTwo = 0.01847519
       const totalApplicationValue = '£100.98'
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
@@ -46,23 +49,38 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
         )
       })
 
-      it('Then the farmer has option to select the action for the land parcel', async () => {
-        await LandParcelsPage.selectRadioButtonByValue(parcel)
+      it('Then the farmer adds an action to the land parcel', async () => {
+        await LandParcelsPage.selectRadioButtonByValue(parcelOne)
         await LandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
           `Choose which actions to do | ${SERVICE_NAME}`
         )
-      })
-
-      it('Then the farmer has option to check the select the action for the land parcel', async () => {
-        await ActionsPage.selectRequiredAction(action, area)
+        await ActionsPage.selectRequiredAction(actionOne, areaOne)
         await LandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
           `You have selected 1 action to 1 parcel | ${SERVICE_NAME}`
         )
       })
 
-      it('Then the farmer is shown the funding summary for the selected action on the land parcel', async () => {
+      it('Then the farmer says Yes and adds another action to the land parcel', async () => {
+        await AddMoreActionsPage.selectRadioButtonByValue('true')
+        await AddMoreActionsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Select Land Parcel | ${SERVICE_NAME}`
+        )
+        await LandParcelsPage.selectRadioButtonByValue(parcelTwo)
+        await LandParcelsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Choose which actions to do | ${SERVICE_NAME}`
+        )
+        await ActionsPage.selectRequiredAction(actionTwo, areaTwo)
+        await LandParcelsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `You have selected 2 actions to 2 parcels | ${SERVICE_NAME}`
+        )
+      })
+
+      it('Then the farmer is shown the summary for the selected action on the land parcel', async () => {
         await AddMoreActionsPage.selectRadioButtonByValue('false')
         await AddMoreActionsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
@@ -78,11 +96,17 @@ describe('Happy Path scenario for CMOR1 action selection and funding details ver
           )
         ).toContain(totalApplicationValue)
         await expect(
-          await CheckYourAnswersPage.getValueForParcelBasedActions(parcel)
-        ).toContain(`CMOR1: Assess moorland and produce a written record`)
+          await CheckYourAnswersPage.getValueForParcelBasedActions(parcelOne)
+        ).toContain(actionOne)
         await expect(
-          await CheckYourAnswersPage.getValueForParcelBasedActions(parcel)
-        ).toContain(`Applied area: ${area} ha`)
+          await CheckYourAnswersPage.getValueForParcelBasedActions(parcelOne)
+        ).toContain(`Applied area: ${areaOne} ha`)
+        await expect(
+          await CheckYourAnswersPage.getValueForParcelBasedActions(parcelTwo)
+        ).toContain(actionTwo)
+        await expect(
+          await CheckYourAnswersPage.getValueForParcelBasedActions(parcelTwo)
+        ).toContain(`Applied area: ${areaTwo} ha`)
       })
     })
   })
