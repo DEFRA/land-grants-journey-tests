@@ -22,7 +22,7 @@ describe('CMOR1 action - area applied for is not the total available area in the
       await performActionSelection(agreementName, parcel, action, area)
       it('Then the appropriate error message is show for area applied', async () => {})
       const errorMessage =
-        'CMOR1: Area applied for (10 ha) does not match parcel area (7.5713 ha)'
+        'CMOR1: Area applied for (10 ha) does not match parcel area (7.57129024 ha)'
       await expect(await ActionsPage.getErrorMessage()).toContain(errorMessage)
     })
   })
@@ -39,7 +39,7 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
       await performActionSelection(agreementName, parcel, action, area)
       it('Then the appropriate error message is show for intersection with the moorland layer', async () => {})
       const errorMessage =
-        'The parcel has a 0.00% intersection with the moorland layer, the minimum is 50% with a tolerance of 1%'
+        'CMOR1: The parcel has a 0% intersection with the moorland layer, the minimum is 50% with a tolerance of 1%'
       await expect(await ActionsPage.getErrorMessage()).toContain(errorMessage)
     })
   })
