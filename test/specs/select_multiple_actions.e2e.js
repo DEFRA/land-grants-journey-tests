@@ -1,6 +1,7 @@
 import { browser, expect } from '@wdio/globals'
 
 import HomePage from 'page-objects/home.page.js'
+import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import knockoutQuestionsPage from 'page-objects/knockout.questions.page.js'
 import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import ActionsPage from 'page-objects/actions.page.js'
@@ -23,11 +24,14 @@ describe('Multiple actions selection and funding details verification', () => {
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)
+        await HomePage.clickButton('Start now')
       })
 
       it('Then the farmer is shown the eligibility questions', async () => {
-        await HomePage.clickButton('Start now')
-
+        await expect(browser).toHaveTitle(
+          `Confirm your details | ${SERVICE_NAME}`
+        )
+        await ConfirmYourDetailsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
           `Do your digital maps show the correct land details? | ${SERVICE_NAME}`
         )

@@ -1,6 +1,7 @@
 import { expect } from '@wdio/globals'
 
 import HomePage from 'page-objects/home.page.js'
+import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import knockoutQuestionsPage from 'page-objects/knockout.questions.page.js'
 import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import ActionsPage from 'page-objects/actions.page.js'
@@ -33,7 +34,7 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
     it('When farmer selects land parcel that has no intersection with the moorland data layer', async () => {
       const parcel = 'SD6843-7039'
       const agreementName = 'Test Agreement'
-      const action = 'CMOR1'
+      const action = 'UPL1'
       const area = 1.33076574
 
       await performActionSelection(agreementName, parcel, action, area)
@@ -48,6 +49,7 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
 async function performActionSelection(agreementName, parcel, action, area) {
   await HomePage.open()
   await HomePage.clickButton('Start now')
+  await ConfirmYourDetailsPage.clickButton('Continue')
   await knockoutQuestionsPage.selectRadioButtonByValue('true')
   await knockoutQuestionsPage.clickButton('Continue')
   await AgreementNamePage.enterAgreementName(agreementName)
