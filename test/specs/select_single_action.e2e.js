@@ -8,6 +8,7 @@ import CheckYourAnswersPage from 'page-objects/check.your.answers.page.js'
 import AgreementNamePage from 'page-objects/agreement.name.page.js'
 import AddMoreActionsPage from 'page-objects/add.more.actions.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
+import ConfirmYourDetailsPage from "page-objects/confirm.your.details.page.js";
 
 describe('Single action selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -20,10 +21,14 @@ describe('Single action selection and funding details verification', () => {
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)
+        await HomePage.clickButton('Start now')
       })
 
       it('Then the farmer is shown the eligibility questions', async () => {
-        await HomePage.clickButton('Start now')
+        await expect(browser).toHaveTitle(
+          `Confirm your details | ${SERVICE_NAME}`
+        )
+        await ConfirmYourDetailsPage.clickButton('Continue')
 
         await expect(browser).toHaveTitle(
           `Do your digital maps show the correct land details? | ${SERVICE_NAME}`
