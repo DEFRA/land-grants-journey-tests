@@ -8,7 +8,7 @@ import CheckYourAnswersPage from 'page-objects/check.your.answers.page.js'
 import AgreementNamePage from 'page-objects/agreement.name.page.js'
 import AddMoreActionsPage from 'page-objects/add.more.actions.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
-import ConfirmYourDetailsPage from "page-objects/confirm.your.details.page.js";
+import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 
 describe('Single action selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
