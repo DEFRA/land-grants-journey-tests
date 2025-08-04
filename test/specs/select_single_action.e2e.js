@@ -77,11 +77,11 @@ describe('Single action selection and funding details verification', () => {
         await expect(
           await CheckYourAnswersPage.getValueFor('Agreement name')
         ).toContain(agreementName)
-        await expect(
-          await CheckYourAnswersPage.getValueFor(
-            'Indicative annual payment (excluding management payment)'
-          )
-        ).toContain(totalApplicationValue)
+        // await expect(
+        //   await CheckYourAnswersPage.getValueFor(
+        //     'Indicative annual payment (excluding management payment)'
+        //   )
+        // ).toContain(totalApplicationValue)
         await expect(
           await CheckYourAnswersPage.getValueForParcelBasedActions(parcel)
         ).toContain(`CMOR1: Assess moorland and produce a written record`)

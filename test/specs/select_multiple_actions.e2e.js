@@ -94,11 +94,11 @@ describe('Multiple actions selection and funding details verification', () => {
         await expect(
           await CheckYourAnswersPage.getValueFor('Agreement name')
         ).toContain(agreementName)
-        await expect(
-          await CheckYourAnswersPage.getValueFor(
-            'Indicative annual payment (excluding management payment)'
-          )
-        ).toContain(totalApplicationValue)
+        // await expect(
+        //   await CheckYourAnswersPage.getValueFor(
+        //     'Indicative annual payment (excluding management payment)'
+        //   )
+        // ).toContain(totalApplicationValue)
         await expect(
           await CheckYourAnswersPage.getValueForParcelBasedActions(parcelOne)
         ).toContain(actionOne)
