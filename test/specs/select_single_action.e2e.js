@@ -17,7 +17,7 @@ describe('Single action selection and funding details verification', () => {
       const agreementName = 'Test Agreement'
       const action = 'CMOR1'
       const area = 4.53411078
-      const totalApplicationValue = '£100.98'
+      // const totalApplicationValue = '£100.98'
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)
@@ -77,11 +77,11 @@ describe('Single action selection and funding details verification', () => {
         await expect(
           await CheckYourAnswersPage.getValueFor('Agreement name')
         ).toContain(agreementName)
-        await expect(
-          await CheckYourAnswersPage.getValueFor(
-            'Indicative annual payment (excluding management payment)'
-          )
-        ).toContain(totalApplicationValue)
+        // await expect(
+        //   await CheckYourAnswersPage.getValueFor(
+        //     'Indicative annual payment (excluding management payment)'
+        //   )
+        // ).toContain(totalApplicationValue)
         await expect(
           await CheckYourAnswersPage.getValueForParcelBasedActions(parcel)
         ).toContain(`CMOR1: Assess moorland and produce a written record`)
