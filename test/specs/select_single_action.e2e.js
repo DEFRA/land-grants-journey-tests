@@ -17,7 +17,7 @@ describe('Single action selection and funding details verification', () => {
       const agreementName = 'Test Agreement'
       const action = 'CMOR1'
       const area = 4.53411078
-      const totalApplicationValue = '£100.98'
+      // const totalApplicationValue = '£100.98'
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)

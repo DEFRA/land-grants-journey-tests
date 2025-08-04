@@ -20,7 +20,7 @@ describe('Multiple actions selection and funding details verification', () => {
       const parcelTwo = 'SD6943-0882'
       const actionTwo = 'UPL2'
       const areaTwo = 0.01847519
-      const totalApplicationValue = '£100.98'
+      // const totalApplicationValue = '£100.98'
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)
