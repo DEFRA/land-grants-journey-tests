@@ -15,15 +15,15 @@ import ConfirmYouWillBeEligiblePage from '../page-objects/confirm.you.will.be.el
 describe('Multiple actions selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
-      const parcelOne = 'SD6743-8083'
+      const parcelOne = 'SD6844-7067'
       const actionOne = 'CMOR1'
-      const areaOne = '4.53411078 ha'
+      const areaOne = '3.10231835 ha'
+      const actionOneValue = '£32.88'
       const parcelTwo = 'SD6743-6292'
       const actionTwo = 'UPL2'
       const areaTwo = '7.57129024 ha'
-      const actionOneValue = '£48.06'
       const actionTwoValue = '£401.27'
-      const totalApplicationValue = '£721.33'
+      const totalApplicationValue = '£706.16'
 
       // Submit the incomplete previous application to clear the save and return application
       it('Submit incomplete previous application', async () => {
