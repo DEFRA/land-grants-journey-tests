@@ -16,6 +16,10 @@ class CheckYourAnswersPage extends Page {
     const valueElement = await keyElement.nextElement()
     return await valueElement.getText()
   }
-}
 
+  async continueButton() {
+    const button = await $("button[class='govuk-button']")
+    return button
+  }
+}
 export default new CheckYourAnswersPage()
