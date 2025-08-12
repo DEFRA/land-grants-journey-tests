@@ -58,7 +58,7 @@ describe('Single action selection and funding details verification', () => {
       it('Then the farmer is shown the list of land parcels page', async () => {
         await ConfirmYourLandDetailsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
-          `Select Land Parcel | ${SERVICE_NAME}`
+          `Select land parcel for actions | ${SERVICE_NAME}`
         )
       })
 
