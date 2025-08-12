@@ -1,5 +1,5 @@
 import HomePage from 'page-objects/home.page.js'
-import knockoutQuestionsPage from 'page-objects/knockout.questions.page.js'
+import ConfirmYourLandDetailsPage from '~/test/page-objects/confirm.your.land.details.js'
 import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import AddMoreActionsPage from 'page-objects/add.more.actions.page.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
@@ -14,16 +14,7 @@ class ApplicationHelper {
     await HomePage.clickButton('Start now')
     await ConfirmYourDetailsPage.clickButton('Continue')
     await ConfirmYouWillBeEligiblePage.clickButton('Continue')
-
-    // check if the radio button is selected
-    const radioButton = await $(`input[type='radio'][value='true']`)
-    const isSelected = await radioButton.isSelected()
-    if (!isSelected) {
-      return
-    }
-
-    // If radio button is selected there is a previous incomplete application, submit the application to clear the cache
-    await knockoutQuestionsPage.clickButton('Continue')
+    await ConfirmYourLandDetailsPage.clickButton('Continue')
 
     // Select land parcel and click continue button on the land parcels page
     await LandParcelsPage.selectRadioButtonByValue(parcel)

@@ -2,7 +2,7 @@ import { expect } from '@wdio/globals'
 
 import HomePage from 'page-objects/home.page.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
-import knockoutQuestionsPage from 'page-objects/knockout.questions.page.js'
+import ConfirmYourLandDetailsPage from '~/test/page-objects/confirm.your.land.details.js'
 import LandParcelsPage from 'page-objects/land.parcels.page.js'
 import ActionsPage from 'page-objects/actions.page.js'
 import ConfirmYouWillBeEligiblePage from '../page-objects/confirm.you.will.be.eligible.page'
@@ -32,8 +32,7 @@ async function performActionSelection(parcel, action) {
   await HomePage.clickButton('Start now')
   await ConfirmYourDetailsPage.clickButton('Continue')
   await ConfirmYouWillBeEligiblePage.clickButton('Continue')
-  await knockoutQuestionsPage.selectRadioButtonByValue('true')
-  await knockoutQuestionsPage.clickButton('Continue')
+  await ConfirmYourLandDetailsPage.clickButton('Continue')
   await LandParcelsPage.selectRadioButtonByValue(parcel)
   await LandParcelsPage.clickButton('Continue')
   await ActionsPage.selectRequiredAction(action)
