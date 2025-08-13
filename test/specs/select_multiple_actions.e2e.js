@@ -54,6 +54,20 @@ describe('Multiple actions selection and funding details verification', () => {
 
       it('Then the farmer is shown the confirm your land details are up to date page', async () => {
         await ConfirmYouWillBeEligiblePage.clickButton('Continue')
+
+        browser.waitUntil(
+          async () => {
+            return (
+              (await browser.getTitle()) ===
+              `Confirm your land details are up to date | ${SERVICE_NAME}`
+            )
+          },
+          {
+            timeout: 10000,
+            timeoutMsg: 'Expected title to be different after 10s'
+          }
+        )
+
         await expect(browser).toHaveTitle(
           `Confirm your land details are up to date | ${SERVICE_NAME}`
         )

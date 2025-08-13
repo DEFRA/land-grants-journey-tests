@@ -6,6 +6,7 @@ import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import CheckYourAnswersPage from '../page-objects/check.your.answers.page'
 import SubmitYourApplicationPage from '../page-objects/submit.your.application.page'
 import ConfirmYouWillBeEligiblePage from '../page-objects/confirm.you.will.be.eligible.page'
+import { SERVICE_NAME } from '~/test/utils/config.js'
 
 class ApplicationHelper {
   async submitPreviousInCompleteApplication(parcel, actionName) {
@@ -15,6 +16,16 @@ class ApplicationHelper {
     await ConfirmYourDetailsPage.clickButton('Continue')
     await ConfirmYouWillBeEligiblePage.clickButton('Continue')
     await ConfirmYourLandDetailsPage.clickButton('Continue')
+
+    browser.waitUntil(
+      async () => {
+        return (
+          (await browser.getTitle()) ===
+          `Confirm your land details are up to date | ${SERVICE_NAME}`
+        )
+      },
+      { timeout: 10000, timeoutMsg: 'Expected title to be different after 10s' }
+    )
 
     // Select land parcel and click continue button on the land parcels page
     await LandParcelsPage.selectRadioButtonByValue(parcel)
