@@ -10,7 +10,7 @@ import { SERVICE_NAME } from '~/test/utils/config.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from '../page-objects/confirm.you.will.be.eligible.page'
-import ApplicationHelper from '~/test/utils/applicationHelper.js'
+// import ApplicationHelper from '~/test/utils/applicationHelper.js'
 
 describe('Single action selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -22,12 +22,12 @@ describe('Single action selection and funding details verification', () => {
       // const totalApplicationValue = '£320.06'
 
       // Submit the incomplete previous application to clear the save and return application
-      it('Submit incomplete previous application', async () => {
-        await ApplicationHelper.submitPreviousInCompleteApplication(
-          parcel,
-          action
-        )
-      })
+      // it('Submit incomplete previous application', async () => {
+      //   await ApplicationHelper.submitPreviousInCompleteApplication(
+      //     parcel,
+      //     action
+      //   )
+      // })
 
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
@@ -50,20 +50,6 @@ describe('Single action selection and funding details verification', () => {
 
       it('Then the farmer is shown the confirm your land details are up to date page', async () => {
         await ConfirmYouWillBeEligiblePage.clickButton('Continue')
-
-        browser.waitUntil(
-          async () => {
-            return (
-              (await browser.getTitle()) ===
-              `Confirm your land details are up to date | ${SERVICE_NAME}`
-            )
-          },
-          {
-            timeout: 10000,
-            timeoutMsg: 'Expected title to be different after 10s'
-          }
-        )
-
         await expect(browser).toHaveTitle(
           `Confirm your land details are up to date | ${SERVICE_NAME}`
         )

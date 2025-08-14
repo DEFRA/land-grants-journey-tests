@@ -9,7 +9,7 @@ import CheckYourAnswersPage from 'page-objects/check.your.answers.page.js'
 import AddMoreActionsPage from 'page-objects/add.more.actions.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
-import ApplicationHelper from '~/test/utils/applicationHelper.js'
+// import ApplicationHelper from '~/test/utils/applicationHelper.js'
 import ConfirmYouWillBeEligiblePage from '../page-objects/confirm.you.will.be.eligible.page'
 
 describe('Multiple actions selection and funding details verification', () => {
@@ -26,12 +26,12 @@ describe('Multiple actions selection and funding details verification', () => {
       // const totalApplicationValue = '£706.16'
 
       // Submit the incomplete previous application to clear the save and return application
-      it('Submit incomplete previous application', async () => {
-        await ApplicationHelper.submitPreviousInCompleteApplication(
-          parcelOne,
-          actionOne
-        )
-      })
+      // it('Submit incomplete previous application', async () => {
+      //   await ApplicationHelper.submitPreviousInCompleteApplication(
+      //     parcelOne,
+      //     actionOne
+      //   )
+      // })
 
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
@@ -54,20 +54,6 @@ describe('Multiple actions selection and funding details verification', () => {
 
       it('Then the farmer is shown the confirm your land details are up to date page', async () => {
         await ConfirmYouWillBeEligiblePage.clickButton('Continue')
-
-        browser.waitUntil(
-          async () => {
-            return (
-              (await browser.getTitle()) ===
-              `Confirm your land details are up to date | ${SERVICE_NAME}`
-            )
-          },
-          {
-            timeout: 10000,
-            timeoutMsg: 'Expected title to be different after 10s'
-          }
-        )
-
         await expect(browser).toHaveTitle(
           `Confirm your land details are up to date | ${SERVICE_NAME}`
         )
