@@ -2,7 +2,7 @@ import { Page } from 'page-objects/page'
 
 class ActionsPage extends Page {
   async selectRequiredAction(actionName) {
-    const checkbox = await $(`input[type='checkbox'][value='${actionName}']`)
+    const checkbox = await $(`input[type='radio'][value='${actionName}']`)
     const isChecked = await checkbox.isSelected()
     if (!isChecked) {
       await checkbox.click()
