@@ -1,10 +1,10 @@
 import { Page } from 'page-objects/page'
 
-class LandParcelsPage extends Page {
-  async selectRadioButtonByValue(value) {
+class SelectLandParcelsPage extends Page {
+  async selectRequiredLandParcel(value) {
     const radioButton = await $(`input[type='radio'][value='${value}']`)
     await radioButton.click()
   }
 }
 
-export default new LandParcelsPage()
+export default new SelectLandParcelsPage()

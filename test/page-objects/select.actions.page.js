@@ -1,6 +1,6 @@
 import { Page } from 'page-objects/page'
 
-class ActionsPage extends Page {
+class SelectActionsPage extends Page {
   async selectRequiredAction(actionName) {
     const checkbox = await $(`input[type='radio'][value='${actionName}']`)
     const isChecked = await checkbox.isSelected()
@@ -15,4 +15,4 @@ class ActionsPage extends Page {
   }
 }
 
-export default new ActionsPage()
+export default new SelectActionsPage()

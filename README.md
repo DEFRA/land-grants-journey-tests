@@ -46,6 +46,9 @@ docker-compose -f docker-compose-local.yml up
 
 Start application you are testing on the url specified in `baseUrl` [wdio.local.conf.js](wdio.local.conf.js)
 
+You must provide the following environment variables in the command or in your environment, e.g. in an .env file
+DEFRA_ID_USER_PASSWORD
+
 ```bash
 npm run test:local
 ```
