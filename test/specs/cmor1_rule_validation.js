@@ -21,8 +21,7 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
 
       await performActionSelection(parcel, action)
       it('Then the appropriate error message is show for intersection with the moorland layer', async () => {})
-      const errorMessage =
-        'The parcel has a 0% intersection with the moorland layer, the minimum is 50% with a tolerance of 1%'
+      const errorMessage = 'This parcel is not majority on the moorland'
       await expect(await ActionsPage.getErrorMessage()).toContain(errorMessage)
     })
   })
