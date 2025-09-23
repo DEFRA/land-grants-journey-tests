@@ -1,4 +1,4 @@
-import { Page } from 'page-objects/page'
+import { Page } from './page.js'
 
 class ReviewTheActionsYouHaveSelectedPage extends Page {
   async doYouWantToAddAnotherAction(value) {
