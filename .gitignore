@@ -12,3 +12,6 @@ coverage
 allure-report/
 allure-results/
 FAILED
+browserstack.err
+local.log
+logs/
