@@ -5,7 +5,7 @@ export const config = {
   user: process.env.BROWSERSTACK_USERNAME,
   key: process.env.BROWSERSTACK_KEY,
   // Local
-  baseUrl: 'https://grants-ui.dev.cdp-int.defra.cloud',
+  baseUrl: 'http://localhost:3000',
   runner: 'local',
   specs: ['./test/specs/**/*.js'],
   exclude: [],
