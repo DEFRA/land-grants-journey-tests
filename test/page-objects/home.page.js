@@ -1,7 +1,7 @@
-import { Page } from 'page-objects/page'
+import { Page } from './page.js'
 
 class HomePage extends Page {
-  open() {
+  async open() {
     return super.open('/find-funding-for-land-or-farms/start')
   }
 }

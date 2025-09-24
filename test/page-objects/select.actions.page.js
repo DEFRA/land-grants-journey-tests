@@ -1,4 +1,4 @@
-import { Page } from 'page-objects/page'
+import { Page } from './page.js'
 
 class SelectActionsPage extends Page {
   async selectRequiredAction(actionName) {

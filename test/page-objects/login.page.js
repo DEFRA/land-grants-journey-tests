@@ -1,6 +1,6 @@
-import { Page } from 'page-objects/page'
+import { Page } from './page.js'
 import { browser, expect } from '@wdio/globals'
-import { SERVICE_NAME } from '~/test/utils/config.js'
+import { SERVICE_NAME } from '../utils/config.js'
 
 class LoginPage extends Page {
   async login(crn) {
