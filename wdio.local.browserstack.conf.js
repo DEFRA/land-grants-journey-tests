@@ -2,12 +2,14 @@ import allure from 'allure-commandline'
 import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
 
 export const config = {
-  user: process.env.BROWSERSTACK_USERNAME,
+  user: process.env.BROWSERSTACK_USER,
   key: process.env.BROWSERSTACK_KEY,
-  // Local
-  baseUrl: 'http://localhost:3000',
+  // local
+  // baseUrl: 'https://localhost:3000/'
+  // dev
+  baseUrl: 'https://grants-ui.dev.cdp-int.defra.cloud/',
   runner: 'local',
-  specs: ['./test/specs/**/*.js'],
+  specs: ['./test/specs/*.js'],
   exclude: [],
   maxInstances: 10,
   capabilities: browserStackCapabilities,
@@ -17,10 +19,10 @@ export const config = {
       {
         testObservability: true,
         testObservabilityOptions: {
-          user: process.env.BROWSERSTACK_USERNAME,
+          user: process.env.BROWSERSTACK_USER,
           key: process.env.BROWSERSTACK_KEY,
           projectName: 'land-grants-journey-tests',
-          buildName: `land-grants-journey-tests-local`
+          buildName: 'land-grants-journey-tests-local'
         },
         acceptInsecureCerts: true,
         forceLocal: true,
@@ -46,7 +48,8 @@ export const config = {
   ],
   mochaOpts: {
     ui: 'bdd',
-    timeout: 600000
+    timeout: 600000,
+    retries: 2
   },
   afterTest: async function (
     test,

@@ -1,27 +1,5 @@
 import fs from 'node:fs'
-import { ProxyAgent, setGlobalDispatcher } from 'undici'
-import { bootstrap } from 'global-agent'
 import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
-import { config as browserstackConfig } from './wdio.local.browserstack.conf.js'
-
-/**
- * Enable webdriver.io to use the outbound proxy.
- * This is required for the test suite to be able to talk to BrowserStack.
- */
-if (process.env.HTTP_PROXY) {
-  const dispatcher = new ProxyAgent({
-    uri: 'http://localhost:3128'
-  })
-  setGlobalDispatcher(dispatcher)
-  bootstrap()
-  global.GLOBAL_AGENT.HTTP_PROXY = 'http://localhost:3128'
-}
-
-browserstackConfig.services[0][1].opts = {
-  binarypath: '/root/.browserstack/BrowserStackLocal',
-  proxyHost: 'localhost',
-  proxyPort: 3128
-}
 
 const oneMinute = 60 * 1000
 
@@ -40,7 +18,7 @@ export const config = {
   baseUrl: `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
   // You will need to provide your own BrowserStack credentials.
   // These should be added as secrets to the test suite.
-  user: process.env.BROWSERSTACK_USERNAME,
+  user: process.env.BROWSERSTACK_USER,
   key: process.env.BROWSERSTACK_KEY,
 
   // Tests to run
@@ -63,7 +41,7 @@ export const config = {
       {
         testObservability: true, // Disable if you do not want to use the browserstack test observer functionality
         testObservabilityOptions: {
-          user: process.env.BROWSERSTACK_USERNAME,
+          user: process.env.BROWSERSTACK_USER,
           key: process.env.BROWSERSTACK_KEY,
           projectName: 'land-grants-journey-tests', // should match project in browserstack
           buildName: `land-grants-journey-tests-${process.env.ENVIRONMENT}`
