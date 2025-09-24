@@ -41,6 +41,7 @@
     "@wdio/mocha-framework": "9.4.3",
     "@wdio/spec-reporter": "9.4.3",
     "allure-commandline": "2.32.0",
+    "global-agent": "3.0.0",
     "esm-module-alias": "2.2.1"
   },
   "devDependencies": {
