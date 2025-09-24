@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "run_id: $RUN_ID"
-npm run test:browserstack
+npm run ttest:cdp:browserstack
 
 npm run report:publish
 publish_exit_code=$?
