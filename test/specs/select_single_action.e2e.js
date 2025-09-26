@@ -20,13 +20,10 @@ describe('Single action selection and funding details verification', () => {
 
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
-        console.log('Redirected to login page --', await browser.getUrl())
         await LoginPage.login(crn)
-        console.log('After login --', await browser.getUrl())
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
-        await HomePage.clickButton('Start now')
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )
