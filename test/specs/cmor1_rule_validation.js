@@ -30,7 +30,6 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
 async function performActionSelection(parcel, action) {
   await HomePage.open()
   await LoginPage.login('1102838829')
-  await HomePage.clickButton('Start now')
   await ConfirmYourDetailsPage.clickButton('Continue')
   await ConfirmYouWillBeEligiblePage.clickButton('Continue')
   await ConfirmYourLandDetailsPage.clickButton('Continue')
