@@ -17,7 +17,7 @@ class LoginPage extends Page {
     await passwordInput.setValue(process.env.DEFRA_ID_USER_PASSWORD)
     await submitButton.click()
     // ensure we wait and are redirected to our service start page
-    await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)
+    await expect(browser).toHaveTitle(`Confirm your details | ${SERVICE_NAME}`)
   }
 }
 
