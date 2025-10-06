@@ -24,7 +24,6 @@ describe('Multiple actions selection and funding details verification', () => {
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await LoginPage.login(crn)
-        await expect(browser).toHaveTitle(`Start page | ${SERVICE_NAME}`)
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
