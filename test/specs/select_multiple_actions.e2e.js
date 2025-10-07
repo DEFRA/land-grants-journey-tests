@@ -30,6 +30,7 @@ describe('Multiple actions selection and funding details verification', () => {
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )
+        await ConfirmYourDetailsPage.clearApplicationState()
       })
 
       it('Then the farmer is shown the confirm eligibility page', async () => {

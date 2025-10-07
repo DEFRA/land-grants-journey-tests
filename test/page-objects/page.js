@@ -13,6 +13,11 @@ class Page {
     const button = await $("button[type='submit']")
     await button.click()
   }
+
+  async clearApplicationState() {
+    const link = await $("a[href='./clear-application-state']")
+    await link.click()
+  }
 }
 
 export { Page }
