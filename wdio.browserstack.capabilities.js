@@ -79,6 +79,7 @@ export const browserStackCapabilities = [
       osVersion: 'Sequoia'
     }
   },
+  // iPhone
   {
     browserName: 'Safari',
     'wdio-ics:options': {
@@ -105,6 +106,7 @@ export const browserStackCapabilities = [
       browserVersion: 'latest'
     }
   },
+  // Android
   {
     browserName: 'Chrome',
     'wdio-ics:options': {
