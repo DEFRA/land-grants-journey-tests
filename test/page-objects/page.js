@@ -16,6 +16,7 @@ class Page {
 
   async clearApplicationState() {
     const link = await $("a[href='./clear-application-state']")
+    await link.scrollIntoView()
     await link.click()
   }
 }
