@@ -14,11 +14,11 @@ import LoginPage from '../page-objects/login.page.js'
 describe.skip('Multiple actions selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
-      const crn = '1100495932'
-      const parcelOne = 'SD7946-0155'
+      const crn = '1103623923'
+      const parcelOne = 'SD7858-5623'
       const actionOne = 'CMOR1'
 
-      const parcelTwo = 'SD7846-4509'
+      const parcelTwo = 'SD7858-5806'
       const actionTwo = 'UPL2'
 
       it('Then the farmer is shown the landing page', async () => {
@@ -27,10 +27,10 @@ describe.skip('Multiple actions selection and funding details verification', () 
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
+        await HomePage.clearApplicationState()
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )
-        await ConfirmYourDetailsPage.clearApplicationState()
       })
 
       it('Then the farmer is shown the confirm eligibility page', async () => {
@@ -118,6 +118,7 @@ describe.skip('Multiple actions selection and funding details verification', () 
         const submitButton = await SubmitYourApplicationPage.continueButton()
         submitButton.click()
         await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
+        await HomePage.clearApplicationState()
       })
     })
   })

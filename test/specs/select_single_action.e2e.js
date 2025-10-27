@@ -14,8 +14,8 @@ import ConfirmYouWillBeEligiblePage from '../page-objects/confirm.you.will.be.el
 describe('Single action selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
-      const crn = '1100495932'
-      const parcel = 'SD7946-0155'
+      const crn = '1103623923'
+      const parcel = 'SD7858-5623'
       const action = 'CMOR1'
 
       it('Then the farmer is shown the landing page', async () => {
@@ -24,10 +24,10 @@ describe('Single action selection and funding details verification', () => {
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
+        await HomePage.clearApplicationState()
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )
-        await ConfirmYourDetailsPage.clearApplicationState()
       })
 
       it('Then the farmer is shown the confirm eligibility page', async () => {
@@ -89,6 +89,7 @@ describe('Single action selection and funding details verification', () => {
         const submitButton = await SubmitYourApplicationPage.continueButton()
         submitButton.click()
         await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
+        await HomePage.clearApplicationState()
       })
     })
   })
