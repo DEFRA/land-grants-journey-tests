@@ -86,8 +86,8 @@ describe('Single action selection and funding details verification', () => {
       })
 
       it('Then the farmer is shown the confirmation page', async () => {
-        const submitButton = await SubmitYourApplicationPage.continueButton()
-        submitButton.click()
+        const submitButton = await SubmitYourApplicationPage.submitButton()
+        await submitButton.click()
         await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
         await HomePage.clearApplicationState()
       })
