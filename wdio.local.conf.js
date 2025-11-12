@@ -112,7 +112,11 @@ export const config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: 'http://localhost:3000',
+  // baseUrl: 'https://grants-ui.test.cdp-int.defra.cloud/',
+  baseUrl:
+    `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud` ||
+    'http://localhost:3000',
+
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
