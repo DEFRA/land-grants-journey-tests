@@ -58,7 +58,7 @@ describe('Multiple actions selection and funding details verification', () => {
         await SelectLandParcelsPage.selectRequiredLandParcel(parcelOne)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
-          `Select actions for land parcel | ${SERVICE_NAME}`
+          `Select actions for land parcel ${parcelOne.replace('-', ' ')} | ${SERVICE_NAME}`
         )
         await ActionsPage.selectRequiredAction(actionOne)
         await SelectLandParcelsPage.clickButton('Continue')
@@ -78,7 +78,7 @@ describe('Multiple actions selection and funding details verification', () => {
         await SelectLandParcelsPage.selectRequiredLandParcel(parcelTwo)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
-          `Select actions for land parcel | ${SERVICE_NAME}`
+          `Select actions for land parcel ${parcelTwo.replace('-', ' ')} | ${SERVICE_NAME}`
         )
         await ActionsPage.selectRequiredAction(actionTwo)
         await SelectLandParcelsPage.clickButton('Continue')

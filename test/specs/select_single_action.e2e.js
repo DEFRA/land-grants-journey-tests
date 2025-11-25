@@ -55,7 +55,7 @@ describe('Single action selection and funding details verification', () => {
         await SelectLandParcelsPage.selectRequiredLandParcel(parcel)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
-          `Select actions for land parcel | ${SERVICE_NAME}`
+          `Select actions for land parcel ${parcel.replace('-', ' ')} | ${SERVICE_NAME}`
         )
       })
 
