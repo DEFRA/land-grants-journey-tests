@@ -1,5 +1,6 @@
 import allure from 'allure-commandline'
 import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
+import { getSpecsForEnv } from './wdio.specs.js'
 
 export const config = {
   user: process.env.BROWSERSTACK_USER,
@@ -9,7 +10,7 @@ export const config = {
   // dev
   baseUrl: 'https://grants-ui.dev.cdp-int.defra.cloud/',
   runner: 'local',
-  specs: ['./test/specs/*.js'],
+  specs: getSpecsForEnv(),
   exclude: [],
   maxInstances: 1,
   capabilities: browserStackCapabilities,

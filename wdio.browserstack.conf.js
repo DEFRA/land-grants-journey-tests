@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
+import { getSpecsForEnv } from './wdio.specs.js'
 
 const oneMinute = 60 * 1000
 
@@ -22,7 +23,7 @@ export const config = {
   key: process.env.BROWSERSTACK_KEY,
 
   // Tests to run
-  specs: ['./test/specs/**/*.js'],
+  specs: getSpecsForEnv(),
   // Tests to exclude
   exclude: [],
   maxInstances: 1,

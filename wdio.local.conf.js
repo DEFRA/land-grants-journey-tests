@@ -1,4 +1,5 @@
 import allure from 'allure-commandline'
+import { getSpecsForEnv } from './wdio.specs.js'
 
 const debug = process.env.DEBUG
 const oneMinute = 60 * 1000
@@ -33,7 +34,7 @@ export const config = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-  specs: ['./test/specs/**/*.js'],
+  specs: getSpecsForEnv(),
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
