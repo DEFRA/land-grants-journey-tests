@@ -2,7 +2,7 @@
 
 echo "run_id: $RUN_ID"
 
-if [[ "${ENVIRONMENT:-}" == "prod" ]]; then
+if [[ "${ENVIRONMENT:-}" = "prod" ]]; then
   echo "ENVIRONMENT=prod detected. Running default test suite (wdio.conf.js)."
   npm run test
 else
