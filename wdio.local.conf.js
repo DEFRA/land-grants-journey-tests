@@ -114,8 +114,11 @@ export const config = {
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
   baseUrl:
-    `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud` ||
-    'http://localhost:3000',
+    process.env.ENVIRONMENT === 'prod'
+      ? 'https://grants.defra.gov.uk/farm-payments'
+      : process.env.ENVIRONMENT
+        ? `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
+        : 'http://localhost:3000',
 
   //
   // Default timeout for all waitFor* commands.
