@@ -14,11 +14,11 @@ import LoginPage from 'page-objects/login.page.js'
 describe('Multiple actions selection and funding details verification', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
-      const crn = '1103623923'
-      const parcelOne = 'SD7858-1059'
+      const crn = '1102760349'
+      const parcelOne = 'SD5949-6060'
       const actionOne = 'CMOR1'
 
-      const parcelTwo = 'SD7758-8179'
+      const parcelTwo = 'SD6050-3851'
       const actionTwo = 'UPL2'
 
       it('Then the farmer is shown the landing page', async () => {
