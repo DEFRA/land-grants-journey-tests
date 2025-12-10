@@ -9,6 +9,10 @@ class Page {
     return browser.url(path)
   }
 
+  async navigateTo(path) {
+    return browser.url(path)
+  }
+
   async clickButton(selector) {
     const button = await $("button[type='submit']")
     await button.click()
