@@ -15,7 +15,7 @@ afterEach(async () => {
   await browser.deleteAllCookies()
 })
 
-describe('When clicking the Payments link and Terms & Conditions link', () => {
+describe('When clicking the Payments link, Terms & Conditions link and Farm Payment Actions link', () => {
   it('farmer is shown the correct page ', async () => {
     await HomePage.open()
     await LoginPage.login('1102838829')
@@ -32,6 +32,12 @@ describe('When clicking the Payments link and Terms & Conditions link', () => {
     await switchToNewTab()
     await expect(browser).toHaveTitle(
       `Farm payments technical test terms and conditions | ${SERVICE_NAME}`
+    )
+    await closeCurrentTabAndSwitch(originalHandle)
+    await SubmitYourApplicationPage.selectPaymentActionsLink()
+    await switchToNewTab()
+    await expect(browser).toHaveTitle(
+      `Farm payments technical test actions | ${SERVICE_NAME}`
     )
     await closeCurrentTabAndSwitch(originalHandle)
   })

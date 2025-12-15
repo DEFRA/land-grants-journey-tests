@@ -18,6 +18,13 @@ class SubmitYourApplicationPage extends Page {
     )
     await link.click()
   }
+
+  async selectPaymentActionsLink() {
+    const link = await $(
+      "//a[contains(text(),'Farm payments technical test actions (opens in new tab)')]"
+    )
+    await link.click()
+  }
 }
 
 export default new SubmitYourApplicationPage()
