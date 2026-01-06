@@ -1,4 +1,4 @@
-name: Run Grants UI Docker
+name: Integrated Journey Tests
 
 on:
   pull_request:
@@ -6,38 +6,47 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-run:
+  journey-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Current Repository
+      - name: Checkout Journey Tests (Current Repo)
         uses: actions/checkout@v4
 
-      - name: Checkout Grants UI Repository
+      - name: Checkout Grants UI
         uses: actions/checkout@v4
         with:
           repository: DEFRA/grants-ui
-          path: grants-ui # Checks out the repo into a sub-folder named 'grants-ui'
+          path: grants-ui
+
+      - name: Checkout Land Grants API
+        uses: actions/checkout@v4
+        with:
+          repository: DEFRA/land-grants-api
+          path: land-grants-api
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
           cache: 'npm'
 
-
-      - name: Install dependencies (Current Repo)
+      - name: Install Journey Test Dependencies
         run: npm install
 
-      - name: Run Grants UI (Land Grants) Docker
+      - name: Start Grants UI Services
         working-directory: ./grants-ui
         run: npm run docker:landgrants:up
 
-      - name: Run Local Tests
+      - name: Run API Migrations
+        working-directory: ./land-grants-api
+        run: npm run docker:migrate:ext:up
+
+      - name: Wait for Services
+        # Giving Docker containers a moment to fully initialize
+        run: sleep 15
+
+      - name: Run Journey Tests
         run: npm run test:local
         env:
-          # Ensure this secret is set in your GitHub Repository Secrets
           DEFRA_ID_USER_PASSWORD: ${{ secrets.DEFRA_ID_USER_PASSWORD }}
-          # You may also need to set the baseUrl if the docker container
-          # is mapped to a specific port on localhost
-          # NODE_TLS_REJECT_UNAUTHORIZED: 0
