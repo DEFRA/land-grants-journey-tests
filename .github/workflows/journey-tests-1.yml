@@ -1,0 +1,79 @@
+name: Parallel Multi-Repo Tests
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  # Job 1: Pull Grants UI in parallel
+  setup-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Grants UI
+        uses: actions/checkout@v4
+        with:
+          repository: DEFRA/grants-ui
+          path: grants-ui
+      - name: Upload Grants UI Workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: grants-ui-repo
+          path: grants-ui/
+
+  # Job 2: Pull Land Grants API in parallel
+  setup-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Land Grants API
+        uses: actions/checkout@v4
+        with:
+          repository: DEFRA/land-grants-api
+          path: land-grants-api
+      - name: Upload API Workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: land-grants-api-repo
+          path: land-grants-api/
+
+  # Job 3: Run services and tests once Job 1 and 2 are done
+  run-tests:
+    runs-on: ubuntu-latest
+    needs: [setup-ui, setup-api]
+    steps:
+      - name: Checkout Journey Tests (Current Repo)
+        uses: actions/checkout@v4
+
+      - name: Download Grants UI
+        uses: actions/download-artifact@v4
+        with:
+          name: grants-ui-repo
+          path: grants-ui
+
+      - name: Download Land Grants API
+        uses: actions/download-artifact@v4
+        with:
+          name: land-grants-api-repo
+          path: land-grants-api
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Journey Test Dependencies
+        run: npm install
+
+      - name: Run Grants UI Docker
+        working-directory: ./grants-ui
+        run: npm run docker:landgrants:up
+
+      - name: Run API Migrations
+        working-directory: ./land-grants-api
+        run: npm run docker:migrate:ext:up
+
+      - name: Run Local Journey Tests
+        run: npm run test:local
+        env:
+          DEFRA_ID_USER_PASSWORD: ${{ secrets.DEFRA_ID_USER_PASSWORD }}
