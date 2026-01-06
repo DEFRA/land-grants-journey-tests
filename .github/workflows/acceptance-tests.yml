@@ -29,6 +29,15 @@ jobs:
       - name: Install dependencies (Current Repo)
         run: npm install
 
-      - name: Run Docker Landgrants
+      - name: Run Grants UI (Land Grants) Docker
         working-directory: ./grants-ui
         run: npm run docker:landgrants:up
+
+      - name: Run Local Tests
+        run: npm run test:local
+        env:
+          # Ensure this secret is set in your GitHub Repository Secrets
+          DEFRA_ID_USER_PASSWORD: ${{ secrets.DEFRA_ID_USER_PASSWORD }}
+          # You may also need to set the baseUrl if the docker container
+          # is mapped to a specific port on localhost
+          # NODE_TLS_REJECT_UNAUTHORIZED: 0
