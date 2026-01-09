@@ -22,4 +22,6 @@ RUN npm install
 
 ENTRYPOINT [ "./entrypoint.sh" ]
 
+CMD ["npm", "run", "test:cdp:browserstack"]
+
 # This is downloading the linux amd64 aws cli. For M1 macs build and run with the --platform=linux/amd64 argument. eg docker build . --platform=linux/amd64
