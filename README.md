@@ -78,6 +78,10 @@ The results of the test run are made available in the portal.
 
 3. Test reports should be published to S3 using the script in `./bin/publish-tests.sh`
 
+## Running in CI
+
+The test suite runs in the CI pipeline for the `grants-ui` service using the configuration file `wdio.ci.conf.js`. This ensures we catch regressions before changes are merged. Only tests tagged `@ci` are run in the CI pipeline, while only tests tagged `@cdp` are run on the CDP platform.
+
 ## Running on GitHub
 
 Alternatively you can run the test suite as a GitHub workflow.
