@@ -15,11 +15,14 @@ afterEach(async () => {
   await browser.deleteAllCookies()
 })
 
+const crn = '1102838829'
+const sbi = '106284736'
+
 describe('When clicking the Payments link, Terms & Conditions link and Farm Payment Actions link', () => {
   it('farmer is shown the correct page ', async () => {
     await HomePage.open()
-    await LoginPage.login('1102838829')
-    await HomePage.clearApplicationState()
+    await LoginPage.login(crn)
+    await HomePage.clearApplicationStateWithAPI(crn, sbi)
     await HomePage.navigateTo('/farm-payments/submit-your-application')
     const originalHandle = await getCurrentWindowHandle()
     await SubmitYourApplicationPage.selectFarmPaymentsLink()
