@@ -16,7 +16,7 @@ afterEach(async () => {
 const crn = '1102838829'
 const sbi = '106284736'
 
-describe('CMOR1 action - land parcel has no intersection with the moorland data layer', () => {
+describe('CMOR1 action - land parcel has no intersection with the moorland data layer @cdp @ci', () => {
   describe('Given farmer is eligible for funding', () => {
     it('When farmer selects land parcel that has no intersection with the moorland data layer', async () => {
       const parcel = 'SD6843-7039'

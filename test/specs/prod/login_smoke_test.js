@@ -9,7 +9,7 @@ afterEach(async () => {
   await browser.deleteAllCookies()
 })
 
-describe('A user with valid credentials', () => {
+describe('A user with valid credentials @cdp @ci', () => {
   it('Can login to the service successfully and his information is shown correctly', async () => {
     const crn = '1106700499'
     await HomePage.open()
