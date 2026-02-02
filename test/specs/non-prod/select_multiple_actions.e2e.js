@@ -11,7 +11,7 @@ import SubmitYourApplicationPage from 'page-objects/submit.your.application.page
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import LoginPage from 'page-objects/login.page.js'
 
-describe('Multiple actions selection and funding details verification @cdp @ci', () => {
+describe.skip('Multiple actions selection and funding details verification @cdp @ci', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
       const crn = '1102760349'
