@@ -15,7 +15,6 @@ describe('Single action selection and funding details verification @cdp @ci', ()
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
       const crn = '1103623923'
-      const sbi = '107365747'
       const parcel = 'SD7858-1059'
       const action = 'CMOR1'
 
@@ -25,7 +24,7 @@ describe('Single action selection and funding details verification @cdp @ci', ()
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
-        await HomePage.clearApplicationStateWithAPI(crn, sbi)
+        await HomePage.clearApplicationState()
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )

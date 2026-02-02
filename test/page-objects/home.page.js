@@ -1,5 +1,4 @@
 import { Page } from './page.js'
-import { mintLockToken } from '~/test/utils/lock.token.js'
 
 class HomePage extends Page {
   async open() {
@@ -8,40 +7,6 @@ class HomePage extends Page {
 
   async clearApplicationState() {
     return super.open('/farm-payments/clear-application-state')
-  }
-
-  async clearApplicationStateWithAPI(crn, sbi) {
-    const grantCode = 'farm-payments'
-    // If RUN_ENV is not set or not 'local', use the environment backend URL
-    // Otherwise use the ephemeral test backend URL
-    const backendUrl =
-      process.env.RUN_ENV !== 'local'
-        ? `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
-        : `https://ephemeral-protected.api.${process.env.ENVIRONMENT}.cdp-int.defra.cloud/grants-ui-backend`
-    console.log('backendUrl: ', backendUrl)
-
-    // If RUN_ENV is not set or not 'local', use the headers without x-api-key
-    // Otherwise use the headers with x-api-key
-    const headers =
-      process.env.RUN_ENV !== 'local'
-        ? {
-            Authorization: `Bearer ${process.env.GRANTS_UI_BACKEND_API_TOKEN}`,
-            'x-application-lock-owner': mintLockToken(crn, sbi, grantCode)
-          }
-        : {
-            Authorization: `Bearer ${process.env.GRANTS_UI_BACKEND_API_TOKEN}`,
-            'x-api-key': process.env.GRANTS_UI_BACKEND_API_KEY,
-            'x-application-lock-owner': mintLockToken(crn, sbi, grantCode)
-          }
-
-    const response = await fetch(
-      `${backendUrl}/state?sbi=${sbi}&grantCode=${grantCode}`,
-      {
-        method: 'DELETE',
-        headers
-      }
-    )
-    await expect(response.status === 200 || response.status === 404).toBe(true)
   }
 }
 

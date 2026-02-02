@@ -13,9 +13,6 @@ afterEach(async () => {
   await browser.deleteAllCookies()
 })
 
-const crn = '1102838829'
-const sbi = '106284736'
-
 describe('CMOR1 action - land parcel has no intersection with the moorland data layer @cdp @ci', () => {
   describe('Given farmer is eligible for funding', () => {
     it('When farmer selects land parcel that has no intersection with the moorland data layer', async () => {
@@ -32,8 +29,8 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
 
 async function performActionSelection(parcel, action) {
   await HomePage.open()
-  await LoginPage.login(crn)
-  await HomePage.clearApplicationStateWithAPI(crn, sbi)
+  await LoginPage.login('1102838829')
+  await HomePage.clearApplicationState()
   await ConfirmYourDetailsPage.clickButton('Continue')
   await ConfirmYouWillBeEligiblePage.clickButton('Continue')
   await ConfirmYourLandDetailsPage.clickButton('Continue')
