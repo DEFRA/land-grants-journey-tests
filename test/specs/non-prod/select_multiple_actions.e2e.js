@@ -18,7 +18,7 @@ describe('Multiple actions selection and funding details verification @cdp @ci',
       const parcelOne = 'SD5949-6060'
       const actionOne = 'CMOR1'
 
-      const parcelTwo = 'SD6050-3851'
+      const parcelTwo = 'SD6352-1073'
       const actionTwo = 'UPL2'
 
       it('Then the farmer is shown the landing page', async () => {
