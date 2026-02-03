@@ -15,7 +15,7 @@ afterEach(async () => {
   await browser.deleteAllCookies()
 })
 
-describe.skip('When clicking the Payments link, Terms & Conditions link and Farm Payment Actions link @cdp @ci', () => {
+describe('When clicking the Payments link, Terms & Conditions link and Farm Payment Actions link @cdp @ci', () => {
   it('farmer is shown the correct page ', async () => {
     await HomePage.open()
     await LoginPage.login('1102838829')

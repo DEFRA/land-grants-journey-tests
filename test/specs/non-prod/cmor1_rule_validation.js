@@ -13,7 +13,7 @@ afterEach(async () => {
   await browser.deleteAllCookies()
 })
 
-describe.skip('CMOR1 action - land parcel has no intersection with the moorland data layer @cdp @ci', () => {
+describe('CMOR1 action - land parcel has no intersection with the moorland data layer @cdp @ci', () => {
   describe('Given farmer is eligible for funding', () => {
     it('When farmer selects land parcel that has no intersection with the moorland data layer', async () => {
       const parcel = 'SD6843-7039'
