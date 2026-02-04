@@ -1,5 +1,5 @@
 import allure from 'allure-commandline'
-import { getSpecsForEnv } from './wdio.specs.js'
+import { getMochaGrepOptsForEnv, getSpecsForEnv } from './wdio.specs.js'
 
 const oneMinute = 60 * 1000
 
@@ -23,7 +23,6 @@ export const config = {
 
   // Tests to run
   specs: getSpecsForEnv(),
-  // Tests to exclude
   exclude: [],
   maxInstances: 1,
 
@@ -86,7 +85,8 @@ export const config = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    timeout: oneMinute
+    timeout: oneMinute,
+    ...getMochaGrepOptsForEnv()
   },
   //
   // =====

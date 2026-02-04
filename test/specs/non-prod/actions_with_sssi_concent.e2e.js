@@ -1,0 +1,139 @@
+import { browser, expect } from '@wdio/globals'
+
+import HomePage from 'page-objects/home.page.js'
+import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
+import ConfirmYourLandDetailsPage from 'page-objects/confirm.your.land.details.js'
+import SelectLandParcelsPage from 'page-objects/select.land.parcels.page.js'
+import ActionsPage from 'page-objects/select.actions.page.js'
+import ReviewTheActionsYouHaveSelectedPage from 'page-objects/review.the.actions.page.js'
+import { SERVICE_NAME } from '~/test/utils/config.js'
+import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
+import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
+import LoginPage from 'page-objects/login.page.js'
+import YouMustHaveSssiConsentPage from 'page-objects/you.must.have.sssi.consent.page.js'
+
+describe('Actions that require SSSI Consent @cdp @dev', () => {
+  describe('Given farmer is eligible for funding', () => {
+    describe('When farmer goes through the land grants application', () => {
+      const crn = '1102760349'
+      const parcelOne = 'SD6352-7656'
+      const actionOne = 'UPL1'
+
+      const parcelTwo = 'SD6352-1073'
+      const actionTwo = 'CMOR1'
+
+      it('Then the farmer is shown the landing page', async () => {
+        await HomePage.open()
+        await LoginPage.login(crn)
+      })
+
+      it('Then the farmer is shown confirm your details page', async () => {
+        await HomePage.clearApplicationState()
+        await expect(browser).toHaveTitle(
+          `Confirm your details | ${SERVICE_NAME}`
+        )
+      })
+
+      it('Then the farmer is shown the confirm eligibility page', async () => {
+        await ConfirmYourDetailsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Confirm you will be eligible | ${SERVICE_NAME}`
+        )
+      })
+
+      it('Then the farmer is shown the confirm your land details are up to date page', async () => {
+        await ConfirmYouWillBeEligiblePage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Confirm your land details are up to date | ${SERVICE_NAME}`
+        )
+      })
+
+      it('Then the farmer is shown the list of land parcels page', async () => {
+        await ConfirmYourLandDetailsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Select land parcel for actions | ${SERVICE_NAME}`
+        )
+      })
+
+      it('Then the farmer adds an action to the land parcel', async () => {
+        await SelectLandParcelsPage.selectRequiredLandParcel(parcelOne)
+        await SelectLandParcelsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Select actions for land parcel ${parcelOne.replace('-', ' ')} | ${SERVICE_NAME}`
+        )
+        await expect(await ActionsPage.getSssiConsentMessage()).toContain(
+          'You must have SSSI consent (opens in new tab) to do these actions on this land parcel.'
+        )
+        await ActionsPage.selectRequiredAction(actionOne)
+        await SelectLandParcelsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Review the actions you have selected | ${SERVICE_NAME}`
+        )
+      })
+
+      it('Then the farmer says Yes and adds another action to the land parcel', async () => {
+        await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(
+          'true'
+        )
+        await ReviewTheActionsYouHaveSelectedPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Select land parcel for actions | ${SERVICE_NAME}`
+        )
+        await SelectLandParcelsPage.selectRequiredLandParcel(parcelTwo)
+        await SelectLandParcelsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Select actions for land parcel ${parcelTwo.replace('-', ' ')} | ${SERVICE_NAME}`
+        )
+        await expect(await ActionsPage.isSssiConsentMessageDisplayed()).toBe(
+          false
+        )
+        await ActionsPage.selectRequiredAction(actionTwo)
+        await SelectLandParcelsPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `Review the actions you have selected | ${SERVICE_NAME}`
+        )
+
+        await expect(
+          await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(1)
+        ).toContain(parcelOne.replace('-', ' '))
+        await expect(
+          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1))
+            .action
+        ).toContain(`Moderate livestock grazing on moorland: ${actionOne}`)
+        await expect(
+          await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(2)
+        ).toContain(parcelTwo.replace('-', ' '))
+        await expect(
+          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))
+            .action
+        ).toContain(
+          `Assess moorland and produce a written record: ${actionTwo}`
+        )
+      })
+
+      it('Then the farmer is shown you must have SSSI consent page', async () => {
+        await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(
+          'false'
+        )
+        await ReviewTheActionsYouHaveSelectedPage.clickButton('Continue')
+        await expect(browser).toHaveTitle(
+          `You must have consent | ${SERVICE_NAME}`
+        )
+        await YouMustHaveSssiConsentPage.clickButton('Continue')
+      })
+
+      it('Then the farmer is shown the submit your application page', async () => {
+        await expect(browser).toHaveTitle(
+          `Submit your application | ${SERVICE_NAME}`
+        )
+        const submitButton = await SubmitYourApplicationPage.submitButton()
+        await submitButton.click()
+      })
+
+      it('Then the farmer is shown the confirmation page', async () => {
+        await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
+        await HomePage.clearApplicationState()
+      })
+    })
+  })
+})
