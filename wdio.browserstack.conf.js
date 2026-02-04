@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
-import { getSpecsForEnv } from './wdio.specs.js'
+import { getMochaGrepOptsForEnv, getSpecsForEnv } from './wdio.specs.js'
 
 const oneMinute = 60 * 1000
 
@@ -24,7 +24,6 @@ export const config = {
 
   // Tests to run
   specs: getSpecsForEnv(),
-  // Tests to exclude
   exclude: [],
   maxInstances: 1,
 
@@ -95,7 +94,7 @@ export const config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: oneMinute * 10,
-    grep: '@cdp'
+    ...getMochaGrepOptsForEnv({ andGrep: '@cdp' })
   },
 
   // Hooks

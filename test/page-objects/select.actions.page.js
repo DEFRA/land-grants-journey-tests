@@ -16,6 +16,20 @@ class SelectActionsPage extends Page {
     const errorElement = await $('.govuk-list.govuk-error-summary__list')
     return await errorElement.getText()
   }
+
+  async getSssiConsentMessage() {
+    const message = await $(
+      "//div[contains(@class,'govuk-hint')][contains(., 'SSSI consent')]"
+    )
+    return await message.getText()
+  }
+
+  async isSssiConsentMessageDisplayed() {
+    const el = await $(
+      "//div[contains(@class,'govuk-hint')][contains(., 'SSSI consent')]"
+    )
+    return (await el.isExisting()) && (await el.isDisplayed())
+  }
 }
 
 export default new SelectActionsPage()

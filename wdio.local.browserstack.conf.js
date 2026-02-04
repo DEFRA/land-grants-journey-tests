@@ -1,6 +1,6 @@
 import allure from 'allure-commandline'
 import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
-import { getSpecsForEnv } from './wdio.specs.js'
+import { getMochaGrepOptsForEnv, getSpecsForEnv } from './wdio.specs.js'
 
 export const config = {
   user: process.env.BROWSERSTACK_USER,
@@ -50,7 +50,8 @@ export const config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: 600000,
-    retries: 2
+    retries: 2,
+    ...getMochaGrepOptsForEnv()
   },
   afterTest: async function (
     test,
