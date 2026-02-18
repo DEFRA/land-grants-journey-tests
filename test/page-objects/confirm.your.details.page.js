@@ -46,12 +46,12 @@ class ConfirmYourDetailsPage extends Page {
 
   async validateValueEmptyFor(label) {
     const keyElement = await $(
-      `//dt[contains(@class,'govuk-summary-list__key')][normalize-space()=\"${label}\"]`
+      `//dt[contains(@class,'govuk-summary-list__key')][normalize-space()="${label}"]`
     )
     await expect(keyElement).toBeDisplayed()
 
     const valueElement = await $(
-      `//dt[contains(@class,'govuk-summary-list__key')][normalize-space()=\"${label}\"]/following-sibling::dd[contains(@class,'govuk-summary-list__value')][1]`
+      `//dt[contains(@class,'govuk-summary-list__key')][normalize-space()="${label}"]/following-sibling::dd[contains(@class,'govuk-summary-list__value')][1]`
     )
     const valueText = await valueElement.getText()
     await expect(valueText.trim()).toBe('This information is missing')
