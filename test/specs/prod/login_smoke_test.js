@@ -22,10 +22,22 @@ describe('A user with valid credentials @cdp @ci', () => {
       await ConfirmYourDetailsPage.getSummaryValue('Business name')
     ).toContain('test-prod-1-land-grants-business-1')
     await expect(
-      await ConfirmYourDetailsPage.getSummaryValue('Address')
-    ).toContain('PEASHOLME GREEN\n' + 'YORK\n' + 'YO1 7PX')
+      await ConfirmYourDetailsPage.getSummaryValue('Address 1')
+    ).toContain('DEPARTMENT FOR ENVIRONMENT FOOD & RURAL AFFAIRS (D E F R A)')
     await expect(
-      await ConfirmYourDetailsPage.getSummaryValue('Contact details')
-    ).toContain('96325 874100\n' + 'test-prod-1-land-grants@equalexperts.com')
+      await ConfirmYourDetailsPage.getSummaryValue('Address 2')
+    ).toContain('KINGS POOL PEASHOLME GREEN')
+    await expect(
+      await ConfirmYourDetailsPage.getSummaryValue('City')
+    ).toContain('YORK')
+    await expect(
+      await ConfirmYourDetailsPage.getSummaryValue('Postcode')
+    ).toContain('YO1 7PX')
+    await expect(
+      await ConfirmYourDetailsPage.getSummaryValue('Mobile number')
+    ).toContain('96325 874100')
+    await expect(
+      await ConfirmYourDetailsPage.getSummaryValue('Email address')
+    ).toContain('test-prod-1-land-grants@equalexperts.com')
   })
 })
