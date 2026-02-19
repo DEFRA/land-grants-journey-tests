@@ -35,3 +35,17 @@ export function getMochaGrepOptsForEnv(
 function escapeRegex(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
+
+/** Specs for compatibility runs (single smoke test against all browsers). */
+const compatibilitySpecs = ['./test/specs/non-prod/select_single_action.e2e.js']
+
+/**
+ * Returns specs for BrowserStack runs.
+ * - When RUN_COMPATIBILITY_TESTS=true: only select_single_action.e2e.js
+ * - Otherwise: normal env-based specs (getSpecsForEnv)
+ */
+export function getSpecsForBrowserStack() {
+  const runCompatibility =
+    (process.env.RUN_COMPATIBILITY_TESTS || '').toLowerCase() === 'true'
+  return runCompatibility ? compatibilitySpecs : getSpecsForEnv()
+}

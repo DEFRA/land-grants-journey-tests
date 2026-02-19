@@ -1,6 +1,9 @@
 import fs from 'node:fs'
-import { browserStackCapabilities } from './wdio.browserstack.capabilities.js'
-import { getMochaGrepOptsForEnv, getSpecsForEnv } from './wdio.specs.js'
+import { getCapabilitiesForRun } from './wdio.browserstack.capabilities.js'
+import {
+  getMochaGrepOptsForEnv,
+  getSpecsForBrowserStack
+} from './wdio.specs.js'
 
 const oneMinute = 60 * 1000
 
@@ -22,8 +25,8 @@ export const config = {
   user: process.env.BROWSERSTACK_USER,
   key: process.env.BROWSERSTACK_KEY,
 
-  // Tests to run
-  specs: getSpecsForEnv(),
+  // Tests to run (compatibility: select_single_action only; normal: env-based specs)
+  specs: getSpecsForBrowserStack(),
   exclude: [],
   maxInstances: 1,
 
@@ -33,7 +36,7 @@ export const config = {
     }
   },
 
-  capabilities: browserStackCapabilities,
+  capabilities: getCapabilitiesForRun(),
 
   services: [
     [
