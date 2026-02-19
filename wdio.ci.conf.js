@@ -19,6 +19,7 @@ export const config = {
   logLevel: 'warn',
   bail: 1,
   baseUrl: process.env.BASE_URL,
+  baseBackendUrl: process.env.BASE_BACKEND_URL,
   waitforTimeout: 10000,
   waitforInterval: 200,
   connectionRetryTimeout: 120000,

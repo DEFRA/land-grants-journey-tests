@@ -19,6 +19,7 @@ export const config = {
     process.env.ENVIRONMENT === 'prod'
       ? 'https://grants.defra.gov.uk/farm-payments'
       : `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
+  baseBackendUrl: `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
 
   // Connection to remote chromedriver
   hostname: process.env.CHROMEDRIVER_URL || '127.0.0.1',

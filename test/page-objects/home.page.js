@@ -1,4 +1,5 @@
 import { Page } from './page.js'
+import { getBackendAuthorizationToken } from '~/test/utils/backend-auth-helper.js'
 import { mintLockToken } from '~/test/utils/lock-token.js'
 
 class HomePage extends Page {
@@ -16,7 +17,7 @@ class HomePage extends Page {
     const grantCode = 'farm-payments'
     const backendUrl =
       process.env.RUN_ENV !== 'local'
-        ? `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
+        ? browser.options.baseBackendUrl
         : `https://ephemeral-protected.api.${process.env.ENVIRONMENT}.cdp-int.defra.cloud/grants-ui-backend`
     console.log('backendUrl: ', backendUrl)
 
@@ -25,12 +26,12 @@ class HomePage extends Page {
     const headers =
       process.env.RUN_ENV !== 'local'
         ? {
-            Authorization: `Bearer ${process.env.GRANTS_UI_BACKEND_API_TOKEN}`,
+            Authorization: `Bearer ${getBackendAuthorizationToken()}`,
             'x-application-lock-owner': mintLockToken(crn, sbi, grantCode)
           }
         : {
             'x-api-key': process.env.GRANTS_UI_BACKEND_API_KEY,
-            Authorization: `Bearer ${process.env.GRANTS_UI_BACKEND_API_TOKEN}`,
+            Authorization: `Bearer ${getBackendAuthorizationToken()}`,
             'x-application-lock-owner': mintLockToken(crn, sbi, grantCode)
           }
 

@@ -116,6 +116,7 @@ export const config = {
       : process.env.ENVIRONMENT
         ? `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
         : 'http://localhost:3000',
+  baseBackendUrl: `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
 
   //
   // Default timeout for all waitFor* commands.

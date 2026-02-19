@@ -9,6 +9,7 @@ export const config = {
   // baseUrl: 'https://localhost:3000/'
   // dev
   baseUrl: 'https://grants-ui.dev.cdp-int.defra.cloud/',
+  baseBackendUrl: `https://grants-ui-backend.dev.cdp-int.defra.cloud`,
   runner: 'local',
   specs: getSpecsForEnv(),
   exclude: [],
