@@ -20,6 +20,7 @@ export const config = {
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
   baseUrl: `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
+  baseBackendUrl: `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
   // You will need to provide your own BrowserStack credentials.
   // These should be added as secrets to the test suite.
   user: process.env.BROWSERSTACK_USER,
