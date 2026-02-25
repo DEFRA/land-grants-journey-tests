@@ -18,10 +18,10 @@ afterEach(async () => {
 describe('When clicking the Payments link, Terms & Conditions link and Farm Payment Actions link @cdp', () => {
   it('farmer is shown the correct page ', async () => {
     const crn = '1102838829'
-    // const sbi = '106284736'
+    const sbi = '106284736'
     await HomePage.open()
     await LoginPage.login(crn)
-    await HomePage.clearApplicationState()
+    await HomePage.clearApplicationStateWithApi(crn, sbi)
     await HomePage.navigateTo('/farm-payments/submit-your-application')
     const originalHandle = await getCurrentWindowHandle()
     await SubmitYourApplicationPage.selectFarmPaymentsLink()
