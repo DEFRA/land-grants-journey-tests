@@ -21,7 +21,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @dev', 
       await HomePage.clearApplicationState()
 
       await ConfirmYourDetailsPage.validateMissingDetailsWarning()
-      await ConfirmYourDetailsPage.validateValueEmptyFor('Title')
+      await ConfirmYourDetailsPage.validateValueEmptyFor('Last name')
       await ConfirmYourDetailsPage.validateContinueButtonDisabled()
     })
   })
@@ -36,7 +36,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @dev', 
       await HomePage.clearApplicationState()
 
       await ConfirmYourDetailsPage.validateMissingDetailsWarning()
-      await ConfirmYourDetailsPage.validateValueEmptyFor('Last name')
+      await ConfirmYourDetailsPage.validateValueEmptyFor('Title')
       await ConfirmYourDetailsPage.validateContinueButtonDisabled()
     })
   })
@@ -51,7 +51,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @dev', 
       await HomePage.clearApplicationState()
 
       await ConfirmYourDetailsPage.validateMissingDetailsWarning()
-      await ConfirmYourDetailsPage.validateValueEmptyFor('Address 1')
+      await ConfirmYourDetailsPage.validateValueEmptyFor('City')
       await ConfirmYourDetailsPage.validateContinueButtonDisabled()
     })
   })
