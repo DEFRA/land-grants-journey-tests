@@ -24,6 +24,13 @@ class SelectActionsPage extends Page {
     return await message.getText()
   }
 
+  async getHeferMessage() {
+    const message = await $(
+      "//div[contains(@class,'govuk-hint')][contains(., 'HEFER')]"
+    )
+    return await message.getText()
+  }
+
   async isSssiConsentMessageDisplayed() {
     const el = await $(
       "//div[contains(@class,'govuk-hint')][contains(., 'SSSI consent')]"

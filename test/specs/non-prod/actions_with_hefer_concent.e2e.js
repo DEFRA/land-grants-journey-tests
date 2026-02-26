@@ -10,18 +10,15 @@ import { SERVICE_NAME } from '~/test/utils/config.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import LoginPage from 'page-objects/login.page.js'
-import YouMustHaveSssiConsentPage from 'page-objects/you.must.have.consent.page.js'
+import YouMustHaveConsentPage from 'page-objects/you.must.have.consent.page.js'
 
-describe('Actions that require SSSI Consent @cdp @dev', () => {
+describe('Actions that require HEFER Consent @cdp @dev', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
-      const crn = '1102760349'
-      const sbi = '121428499'
-      const parcelOne = 'SD6352-7656'
-      const actionOne = 'UPL1'
-
-      const parcelTwo = 'SD6352-1073'
-      const actionTwo = 'CMOR1'
+      const crn = '1106298365'
+      const sbi = '106480734'
+      const parcel = 'NT8109-6898'
+      const action = 'UPL1'
 
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
@@ -57,62 +54,22 @@ describe('Actions that require SSSI Consent @cdp @dev', () => {
       })
 
       it('Then the farmer adds an action to the land parcel', async () => {
-        await SelectLandParcelsPage.selectRequiredLandParcel(parcelOne)
+        await SelectLandParcelsPage.selectRequiredLandParcel(parcel)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
-          `Select actions for land parcel ${parcelOne.replace('-', ' ')} | ${SERVICE_NAME}`
+          `Select actions for land parcel ${parcel.replace('-', ' ')} | ${SERVICE_NAME}`
         )
-        await expect(await ActionsPage.getSssiConsentMessage()).toContain(
-          'You must have SSSI consent (opens in new tab) to do these actions on this land parcel.'
+        await expect(await ActionsPage.getHeferMessage()).toContain(
+          'You must get a HEFER (opens in new tab) to do this action on this land parcel.'
         )
-        await ActionsPage.selectRequiredAction(actionOne)
+        await ActionsPage.selectRequiredAction(action)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
           `Review the actions you have selected | ${SERVICE_NAME}`
         )
       })
 
-      it('Then the farmer says Yes and adds another action to the land parcel', async () => {
-        await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(
-          'true'
-        )
-        await ReviewTheActionsYouHaveSelectedPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Select land parcel for actions | ${SERVICE_NAME}`
-        )
-        await SelectLandParcelsPage.selectRequiredLandParcel(parcelTwo)
-        await SelectLandParcelsPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Select actions for land parcel ${parcelTwo.replace('-', ' ')} | ${SERVICE_NAME}`
-        )
-        await expect(await ActionsPage.isSssiConsentMessageDisplayed()).toBe(
-          false
-        )
-        await ActionsPage.selectRequiredAction(actionTwo)
-        await SelectLandParcelsPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Review the actions you have selected | ${SERVICE_NAME}`
-        )
-
-        await expect(
-          await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(1)
-        ).toContain(parcelOne.replace('-', ' '))
-        await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1))
-            .action
-        ).toContain(`Moderate livestock grazing on moorland: ${actionOne}`)
-        await expect(
-          await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(2)
-        ).toContain(parcelTwo.replace('-', ' '))
-        await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))
-            .action
-        ).toContain(
-          `Assess moorland and produce a written record: ${actionTwo}`
-        )
-      })
-
-      it('Then the farmer is shown you must have SSSI consent page', async () => {
+      it('Then the farmer says No to add another action to the land parcel, is shown HEFER consent page', async () => {
         await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(
           'false'
         )
@@ -120,7 +77,8 @@ describe('Actions that require SSSI Consent @cdp @dev', () => {
         await expect(browser).toHaveTitle(
           `You must have consent | ${SERVICE_NAME}`
         )
-        await YouMustHaveSssiConsentPage.clickButton('Continue')
+        await YouMustHaveConsentPage.validateHeferConsentContent()
+        await YouMustHaveConsentPage.clickButton('Continue')
       })
 
       it('Then the farmer is shown the submit your application page', async () => {
@@ -133,7 +91,6 @@ describe('Actions that require SSSI Consent @cdp @dev', () => {
 
       it('Then the farmer is shown the confirmation page', async () => {
         await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
-        await HomePage.clearApplicationState()
       })
     })
   })
