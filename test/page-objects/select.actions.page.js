@@ -24,10 +24,13 @@ class SelectActionsPage extends Page {
     return await message.getText()
   }
 
-  async getHeferMessage() {
-    const message = await $(
-      "//div[contains(@class,'govuk-hint')][contains(., 'HEFER')]"
-    )
+  async getHeferMessageForAssessMoorland() {
+    const message = await $('#landAction_1-hint')
+    return await message.getText()
+  }
+
+  async getHeferMessageForLivestockGrazing() {
+    const message = await $('#landAction_2-hint')
     return await message.getText()
   }
 
