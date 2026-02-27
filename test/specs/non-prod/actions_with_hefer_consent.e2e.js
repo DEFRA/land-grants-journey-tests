@@ -18,7 +18,8 @@ describe('Actions that require HEFER Consent @cdp @dev', () => {
       const crn = '1106298365'
       const sbi = '106480734'
       const parcel = 'NT8109-6898'
-      const action = 'UPL1'
+      const actionOne = 'UPL1'
+      const actionTwo = 'CMOR1'
 
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
@@ -59,10 +60,18 @@ describe('Actions that require HEFER Consent @cdp @dev', () => {
         await expect(browser).toHaveTitle(
           `Select actions for land parcel ${parcel.replace('-', ' ')} | ${SERVICE_NAME}`
         )
-        await expect(await ActionsPage.getHeferMessage()).toContain(
+        await expect(
+          await ActionsPage.getHeferMessageForLivestockGrazing()
+        ).toContain(
+          'You must get a HEFER (opens in new tab) to do these actions on this land parcel.'
+        )
+        await ActionsPage.selectRequiredAction(actionOne)
+        await expect(
+          await ActionsPage.getHeferMessageForAssessMoorland()
+        ).toContain(
           'You must get a HEFER (opens in new tab) to do this action on this land parcel.'
         )
-        await ActionsPage.selectRequiredAction(action)
+        await ActionsPage.selectRequiredAction(actionTwo)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
           `Review the actions you have selected | ${SERVICE_NAME}`
