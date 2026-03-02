@@ -14,7 +14,7 @@ class YouMustHaveConsentPage extends Page {
     await expect(body).toBeDisplayed()
     const bodyText = await body.getText()
     await expect(bodyText).toContain(
-      'This is because you are applying for actions on land with historic or archaeological features. You must do this before you do your selected SFI actions on this land.'
+      'This is because you are applying for an action on land with historic or archaeological features. You must do this before you do your selected SFI action on this land.'
     )
     await expect(bodyText).toContain(
       'Read the guidance on land with historic or archaeological features (opens in new tab) to find out what a HEFER is and how to request one.'
