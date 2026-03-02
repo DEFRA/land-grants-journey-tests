@@ -23,13 +23,16 @@ describe('Actions that require SSSI Consent @cdp @dev', () => {
       const parcelTwo = 'SD6352-1073'
       const actionTwo = 'CMOR1'
 
+      before(async () => {
+        await HomePage.clearApplicationStateWithApi(crn, sbi)
+      })
+
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await LoginPage.login(crn)
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )

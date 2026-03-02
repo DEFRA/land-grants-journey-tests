@@ -15,10 +15,10 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @dev', 
     it('Then farmer is shown validation message and not allowed to complete the application', async () => {
       const crn = '1400000008'
       const sbi = '400000008'
+      await HomePage.clearApplicationStateWithApi(crn, sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
 
       await ConfirmYourDetailsPage.validateMissingDetailsWarning()
       await ConfirmYourDetailsPage.validateValueEmptyFor('Last name')
@@ -30,10 +30,10 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @dev', 
     it('Then farmer is shown validation message and not allowed to complete the application', async () => {
       const crn = '1400000006'
       const sbi = '400000006'
+      await HomePage.clearApplicationStateWithApi(crn, sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
 
       await ConfirmYourDetailsPage.validateMissingDetailsWarning()
       await ConfirmYourDetailsPage.validateValueEmptyFor('Title')
@@ -45,10 +45,10 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @dev', 
     it('Then farmer is shown validation message and not allowed to complete the application', async () => {
       const crn = '1400000002'
       const sbi = '400000002'
+      await HomePage.clearApplicationStateWithApi(crn, sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
 
       await ConfirmYourDetailsPage.validateMissingDetailsWarning()
       await ConfirmYourDetailsPage.validateValueEmptyFor('City')

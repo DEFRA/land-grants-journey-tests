@@ -22,6 +22,10 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
       const parcel = 'SD6843-7039'
       const action = 'UPL1'
 
+      before(async () => {
+        await HomePage.clearApplicationStateWithApi(crn, sbi)
+      })
+
       await performActionSelection(parcel, action)
       it('Then the appropriate error message is show for intersection with the moorland layer', async () => {})
       const errorMessage = 'This parcel is not majority on the moorland'
@@ -33,7 +37,6 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
 async function performActionSelection(parcel, action) {
   await HomePage.open()
   await LoginPage.login(crn)
-  await HomePage.clearApplicationStateWithApi(crn, sbi)
   await ConfirmYourDetailsPage.clickButton('Continue')
   await ConfirmYouWillBeEligiblePage.clickButton('Continue')
   await ConfirmYourLandDetailsPage.clickButton('Continue')
