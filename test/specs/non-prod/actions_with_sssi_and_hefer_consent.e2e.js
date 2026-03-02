@@ -21,13 +21,16 @@ describe('Actions that require SSSI and HEFER Consent @cdp @dev', () => {
       const actionOne = 'CMOR1'
       const actionTwo = 'UPL2'
 
+      before(async () => {
+        await HomePage.clearApplicationStateWithApi(crn, sbi)
+      })
+
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await LoginPage.login(crn)
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )

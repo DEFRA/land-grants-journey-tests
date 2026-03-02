@@ -19,13 +19,16 @@ describe('Single action selection and funding details verification @cdp @ci', ()
       const parcel = 'SD7858-1059'
       const action = 'CMOR1'
 
+      before(async () => {
+        await HomePage.clearApplicationStateWithApi(crn, sbi)
+      })
+
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await LoginPage.login(crn)
       })
 
       it('Then the farmer is shown confirm your details page', async () => {
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
         await expect(browser).toHaveTitle(
           `Confirm your details | ${SERVICE_NAME}`
         )
