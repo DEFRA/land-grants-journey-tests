@@ -117,7 +117,9 @@ export const config = {
         ? `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
         : 'http://localhost:3000',
   baseBackendUrl: `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
-
+  // To run test on your local activate below baseUrls and comment out above baseUrl and baseBackendUrl
+  // baseUrl: `http://localhost:3000`,
+  // baseBackendUrl: `http://localhost:3001`,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
