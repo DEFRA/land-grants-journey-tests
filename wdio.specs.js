@@ -6,14 +6,17 @@ export function getSpecsForEnv(env = process.env.ENVIRONMENT) {
   return normalized === 'prod' ? prodSpecs : nonProdSpecs
 }
 
+/** Envs where @dev (including @ci @dev) is always excluded. */
+const STRICT_EXCLUDE_DEV_ENVS = ['test', 'ext-test', 'perf-test', 'prod']
+
 /**
- * Mocha grep options so @dev-tagged suites run only when ENVIRONMENT=dev
- * When not dev: exclude @dev
- * For configs that also filter by another tag (e.g. @cdp), pass { andGrep: '@cdp' }
- * to run suites matching andGrep but excluding @dev when not dev.
+ * Mocha grep options for @dev-tagged suites:
+ * - dev: run all
+ * - test/ext-test/perf-test/prod: exclude all @dev (including @ci @dev)
+ * - other: exclude @dev unless the test also has @ci
  *
- * @param {{ andGrep?: string }} [options] - andGrep: when not dev, use regex that matches andGrep but not @dev
- * @returns {object} Options to spread into mochaOpts (grep, invert, or combined regex)
+ * @param {{ andGrep?: string }} [options] - andGrep: e.g. '@cdp'
+ * @returns {object} Options to spread into mochaOpts
  */
 export function getMochaGrepOptsForEnv(
   options = {},
@@ -23,13 +26,33 @@ export function getMochaGrepOptsForEnv(
   if (normalized === 'dev') {
     return options.andGrep ? { grep: options.andGrep } : {}
   }
+
+  const strictExclude =
+    STRICT_EXCLUDE_DEV_ENVS.includes(normalized)
+
   if (options.andGrep) {
-    // Match andGrep (e.g. @cdp) but exclude @dev
+    if (strictExclude) {
+      // Exclude all @dev
+      return {
+        grep: new RegExp(
+          `^(?=.*${escapeRegex(options.andGrep)})(?!.*@dev).*$`
+        )
+      }
+    }
+    // Exclude @dev unless the test also has @ci (e.g. staging)
     return {
-      grep: new RegExp(`^(?=.*${escapeRegex(options.andGrep)})(?!.*@dev).*$`)
+      grep: new RegExp(
+        `^(?=.*${escapeRegex(options.andGrep)})(?=(?:.*@ci|(?!.*@dev))).*$`
+      )
     }
   }
-  return { grep: '@dev', invert: true }
+
+  if (strictExclude) {
+    return { grep: '@dev', invert: true }
+  }
+  return {
+    grep: new RegExp(`^(?=(?:.*@ci|(?!.*@dev))).*$`)
+  }
 }
 
 function escapeRegex(s) {
