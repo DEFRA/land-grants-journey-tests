@@ -27,16 +27,13 @@ export function getMochaGrepOptsForEnv(
     return options.andGrep ? { grep: options.andGrep } : {}
   }
 
-  const strictExclude =
-    STRICT_EXCLUDE_DEV_ENVS.includes(normalized)
+  const strictExclude = STRICT_EXCLUDE_DEV_ENVS.includes(normalized)
 
   if (options.andGrep) {
     if (strictExclude) {
       // Exclude all @dev
       return {
-        grep: new RegExp(
-          `^(?=.*${escapeRegex(options.andGrep)})(?!.*@dev).*$`
-        )
+        grep: new RegExp(`^(?=.*${escapeRegex(options.andGrep)})(?!.*@dev).*$`)
       }
     }
     // Exclude @dev unless the test also has @ci (e.g. staging)
@@ -51,7 +48,7 @@ export function getMochaGrepOptsForEnv(
     return { grep: '@dev', invert: true }
   }
   return {
-    grep: new RegExp(`^(?=(?:.*@ci|(?!.*@dev))).*$`)
+    grep: /^(?=(?:.*@ci|(?!.*@dev))).*$/
   }
 }
 
