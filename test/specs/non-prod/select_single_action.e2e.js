@@ -11,89 +11,102 @@ import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 
+const testCases = [
+  {
+    action: 'CMOR1',
+    crn: '1103623923',
+    sbi: '107365747',
+    parcel: 'SD7858-1059',
+    expectedActionText: 'Assess moorland and produce a written record: CMOR1'
+  },
+  {
+    action: 'UPL8',
+    crn: '1103711172',
+    sbi: '107034848',
+    parcel: 'NY8836-6516',
+    expectedActionText:
+      'Shepherding livestock on moorland (remove stock for at least 4 months): UPL8'
+  }
+]
+
 describe('Single action selection and funding details verification @cdp @ci', () => {
-  describe('Given farmer is eligible for funding', () => {
-    describe('When farmer goes through the land grants application', () => {
-      const crn = '1103623923'
-      const sbi = '107365747'
-      const parcel = 'SD7858-1059'
-      const action = 'CMOR1'
+  testCases.forEach(({ action, crn, sbi, parcel, expectedActionText }) => {
+    describe(`Given farmer applies only for ${action}`, () => {
+      describe('When farmer goes through the land grants application', () => {
+        it('Then the farmer is shown the landing page', async () => {
+          await HomePage.clearApplicationStateWithApi(crn, sbi)
+          await HomePage.open()
+          await LoginPage.login(crn)
+        })
 
-      before(async () => {
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
-      })
+        it('Then the farmer is shown confirm your details page', async () => {
+          await expect(browser).toHaveTitle(
+            `Confirm your details | ${SERVICE_NAME}`
+          )
+        })
 
-      it('Then the farmer is shown the landing page', async () => {
-        await HomePage.open()
-        await LoginPage.login(crn)
-      })
+        it('Then the farmer is shown the confirm eligibility page', async () => {
+          await ConfirmYourDetailsPage.clickButton('Continue')
+          await expect(browser).toHaveTitle(
+            `Confirm you will be eligible | ${SERVICE_NAME}`
+          )
+        })
 
-      it('Then the farmer is shown confirm your details page', async () => {
-        await expect(browser).toHaveTitle(
-          `Confirm your details | ${SERVICE_NAME}`
-        )
-      })
+        it('Then the farmer is shown the confirm your land details are up to date page', async () => {
+          await ConfirmYouWillBeEligiblePage.clickButton('Continue')
+          await expect(browser).toHaveTitle(
+            `Confirm your land details are up to date | ${SERVICE_NAME}`
+          )
+        })
 
-      it('Then the farmer is shown the confirm eligibility page', async () => {
-        await ConfirmYourDetailsPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Confirm you will be eligible | ${SERVICE_NAME}`
-        )
-      })
+        it('Then the farmer is shown the list of land parcels page', async () => {
+          await ConfirmYourLandDetailsPage.clickButton('Continue')
+          await expect(browser).toHaveTitle(
+            `Select land parcel for actions | ${SERVICE_NAME}`
+          )
+        })
 
-      it('Then the farmer is shown the confirm your land details are up to date page', async () => {
-        await ConfirmYouWillBeEligiblePage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Confirm your land details are up to date | ${SERVICE_NAME}`
-        )
-      })
+        it('Then the farmer has option to select the action for the land parcel', async () => {
+          await SelectLandParcelsPage.selectRequiredLandParcel(parcel)
+          await SelectLandParcelsPage.clickButton('Continue')
+          await expect(browser).toHaveTitle(
+            `Select actions for land parcel ${parcel.replace('-', ' ')} | ${SERVICE_NAME}`
+          )
+        })
 
-      it('Then the farmer is shown the list of land parcels page', async () => {
-        await ConfirmYourLandDetailsPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Select land parcel for actions | ${SERVICE_NAME}`
-        )
-      })
+        it('Then the farmer says No to add another action to the land parcel', async () => {
+          await ActionsPage.selectRequiredAction(action)
+          await SelectLandParcelsPage.clickButton('Continue')
+          await expect(browser).toHaveTitle(
+            `Review the actions you have selected | ${SERVICE_NAME}`
+          )
 
-      it('Then the farmer has option to select the action for the land parcel', async () => {
-        await SelectLandParcelsPage.selectRequiredLandParcel(parcel)
-        await SelectLandParcelsPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Select actions for land parcel ${parcel.replace('-', ' ')} | ${SERVICE_NAME}`
-        )
-      })
+          await expect(
+            await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(1)
+          ).toContain(parcel.replace('-', ' '))
+          const actions =
+            await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1)
+          await expect(actions[0].action).toContain(expectedActionText)
+        })
 
-      it('Then the farmer says No to add another action to the land parcel', async () => {
-        await ActionsPage.selectRequiredAction(action)
-        await SelectLandParcelsPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Review the actions you have selected | ${SERVICE_NAME}`
-        )
+        it('Then the farmer is shown the submit your application page', async () => {
+          await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(
+            'false'
+          )
+          await ReviewTheActionsYouHaveSelectedPage.clickButton('Continue')
+          await expect(browser).toHaveTitle(
+            `Submit your application | ${SERVICE_NAME}`
+          )
+        })
 
-        await expect(
-          await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(1)
-        ).toContain(parcel.replace('-', ' '))
-        await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1))
-            .action
-        ).toContain(`Assess moorland and produce a written record: ${action}`)
-      })
-
-      it('Then the farmer is shown the submit your application page', async () => {
-        await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(
-          'false'
-        )
-        await ReviewTheActionsYouHaveSelectedPage.clickButton('Continue')
-        await expect(browser).toHaveTitle(
-          `Submit your application | ${SERVICE_NAME}`
-        )
-      })
-
-      it('Then the farmer is shown the confirmation page', async () => {
-        const submitButton = await SubmitYourApplicationPage.submitButton()
-        await submitButton.click()
-        await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
-        await HomePage.clearApplicationState()
+        it('Then the farmer is shown the confirmation page', async () => {
+          const submitButton = await SubmitYourApplicationPage.submitButton()
+          await submitButton.click()
+          await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
+          await HomePage.clearApplicationState()
+          await ConfirmYourDetailsPage.signOutAndConfirm()
+          await browser.deleteAllCookies()
+        })
       })
     })
   })

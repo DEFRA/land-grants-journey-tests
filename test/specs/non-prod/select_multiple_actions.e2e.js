@@ -94,7 +94,7 @@ describe('Multiple actions selection and funding details verification @cdp @ci',
           await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(1)
         ).toContain(parcelOne.replace('-', ' '))
         await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1))
+          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1))[0]
             .action
         ).toContain(
           `Assess moorland and produce a written record: ${actionOne}`
@@ -103,7 +103,7 @@ describe('Multiple actions selection and funding details verification @cdp @ci',
           await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(2)
         ).toContain(parcelTwo.replace('-', ' '))
         await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))
+          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))[0]
             .action
         ).toContain(`Low livestock grazing on moorland: ${actionTwo}`)
       })
