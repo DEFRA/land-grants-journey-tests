@@ -21,9 +21,9 @@ const testCases = [
   },
   {
     action: 'UPL8',
-    crn: '1103711172',
-    sbi: '107034848',
-    parcel: 'NY8836-6516',
+    crn: '1102760349',
+    sbi: '121428499',
+    parcel: 'SD6352-1073',
     expectedActionText:
       'Shepherding livestock on moorland (remove stock for at least 4 months): UPL8'
   }
