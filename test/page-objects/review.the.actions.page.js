@@ -6,16 +6,26 @@ class ReviewTheActionsYouHaveSelectedPage extends Page {
     await radioButton.click()
   }
 
+  /**
+   * Returns an array of action data for the land parcel at cardIndex.
+   * Each land parcel can have multiple actions.
+   * @param {number} cardIndex - 1-based index of the land parcel card
+   * @returns {Promise<Array<{action: string, quantity: string, yearlyPayment: string}>>}
+   */
   async getAddedActionsData(cardIndex) {
     const card = await $(`.govuk-summary-card:nth-of-type(${cardIndex})`)
-    const firstRow = await card.$('tbody tr')
-    const cells = await firstRow.$$('td')
+    const rows = await card.$$('tbody tr')
+    const actions = []
 
-    const action = await cells[0].getText()
-    const quantity = await cells[1].getText()
-    const yearlyPayment = await cells[2].getText()
+    for (const row of rows) {
+      const cells = await row.$$('td')
+      const action = await cells[0].getText()
+      const quantity = await cells[1].getText()
+      const yearlyPayment = await cells[2].getText()
+      actions.push({ action, quantity, yearlyPayment })
+    }
 
-    return { action, quantity, yearlyPayment }
+    return actions
   }
 
   async getLandParcelData(cardIndex) {

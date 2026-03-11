@@ -22,6 +22,7 @@ describe('Actions that require SSSI Consent @cdp @ci', () => {
 
       const parcelTwo = 'SD6352-1073'
       const actionTwo = 'CMOR1'
+      const actionThree = 'UPL10'
 
       before(async () => {
         await HomePage.clearApplicationStateWithApi(crn, sbi)
@@ -75,7 +76,7 @@ describe('Actions that require SSSI Consent @cdp @ci', () => {
         )
       })
 
-      it('Then the farmer says Yes and adds another action to the land parcel', async () => {
+      it('Then the farmer says Yes and adds another actions to the land parcel', async () => {
         await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(
           'true'
         )
@@ -92,6 +93,7 @@ describe('Actions that require SSSI Consent @cdp @ci', () => {
           false
         )
         await ActionsPage.selectRequiredAction(actionTwo)
+        await ActionsPage.selectRequiredAction(actionThree)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
           `Review the actions you have selected | ${SERVICE_NAME}`
@@ -101,17 +103,23 @@ describe('Actions that require SSSI Consent @cdp @ci', () => {
           await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(1)
         ).toContain(parcelOne.replace('-', ' '))
         await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1))
+          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(1))[0]
             .action
         ).toContain(`Moderate livestock grazing on moorland: ${actionOne}`)
         await expect(
           await ReviewTheActionsYouHaveSelectedPage.getLandParcelData(2)
         ).toContain(parcelTwo.replace('-', ' '))
         await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))
+          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))[0]
             .action
         ).toContain(
           `Assess moorland and produce a written record: ${actionTwo}`
+        )
+        await expect(
+          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))[1]
+            .action
+        ).toContain(
+          `Shepherding livestock on moorland (remove stock for at least 8 months): ${actionThree}`
         )
       })
 
