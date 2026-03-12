@@ -18,20 +18,23 @@ const testCases = [
     sbi: '107365747',
     parcel: 'SD7858-1059',
     expectedActionText: 'Assess moorland and produce a written record: CMOR1'
+  },
+  {
+    action: 'UPL8',
+    crn: '1102760349',
+    sbi: '121428499',
+    parcel: 'SD6352-1073',
+    expectedActionText:
+      'Shepherding livestock on moorland (remove stock for at least 4 months): UPL8',
+    tags: '@upl8'
   }
-  // {
-  //   action: 'UPL8',
-  //   crn: '1102760349',
-  //   sbi: '121428499',
-  //   parcel: 'SD6352-1073',
-  //   expectedActionText:
-  //     'Shepherding livestock on moorland (remove stock for at least 4 months): UPL8'
-  // }
 ]
 
 describe('Single action selection and funding details verification @cdp @ci', () => {
-  testCases.forEach(({ action, crn, sbi, parcel, expectedActionText }) => {
-    describe(`Given farmer applies only for ${action}`, () => {
+  testCases.forEach((tc) => {
+    const { action, crn, sbi, parcel, expectedActionText, tags = '' } = tc
+    const tagStr = tags ? ` ${tags}` : ''
+    describe(`Given farmer applies only for ${action}${tagStr}`.trim(), () => {
       describe('When farmer goes through the land grants application', () => {
         it('Then the farmer is shown the landing page', async () => {
           await HomePage.clearApplicationStateWithApi(crn, sbi)

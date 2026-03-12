@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import { getMochaGrepOptsForCI } from './wdio.specs.js'
 
 export const config = {
   hostname: 'selenium-chrome',
@@ -39,7 +40,7 @@ export const config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: 60000,
-    grep: '@ci'
+    ...getMochaGrepOptsForCI()
   },
   onComplete: async function (exitCode, config, capabilities, results) {
     // !Do Not Remove! Required to cause test suite to fail and return non-zero.

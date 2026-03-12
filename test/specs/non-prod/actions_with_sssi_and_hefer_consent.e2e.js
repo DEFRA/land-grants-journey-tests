@@ -12,7 +12,7 @@ import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligi
 import LoginPage from 'page-objects/login.page.js'
 import YouMustHaveConsentPage from 'page-objects/you.must.have.consent.page.js'
 
-describe('Actions that require SSSI and HEFER Consent @cdp @ci @dev', () => {
+describe('Actions that require SSSI and HEFER Consent @cdp @ci @dev @hefer', () => {
   describe('Given farmer is eligible for funding', () => {
     describe('When farmer goes through the land grants application', () => {
       const crn = '1101092483'
