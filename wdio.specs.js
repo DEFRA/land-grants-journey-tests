@@ -9,6 +9,25 @@ export function getSpecsForEnv(env = process.env.ENVIRONMENT) {
 /** Envs where @dev (including @ci @dev) is always excluded. */
 const STRICT_EXCLUDE_DEV_ENVS = ['test', 'ext-test', 'perf-test', 'prod']
 
+/** Tag to feature flag - exclude @tag tests when the flag is not 'true'. */
+const TAG_TO_FLAG = {
+  '@hefer': 'ENABLE_LAND_GRANT_HEFER_20260219',
+  '@sssi': 'ENABLE_LAND_GRANT_SSSI_20260122',
+  '@upl8': 'ENABLE_UPL_8_AND_10_20260303'
+}
+
+function getFeatureFlagExcludeLookaheads() {
+  const parts = []
+  for (const [tag, flag] of Object.entries(TAG_TO_FLAG)) {
+    const enabled =
+      (process.env[flag] || '').toString().toLowerCase() === 'true'
+    if (!enabled) {
+      parts.push(`(?!.*${escapeRegex(tag)})`)
+    }
+  }
+  return parts.join('')
+}
+
 /**
  * Mocha grep options for @dev-tagged suites:
  * - dev: run all
@@ -23,32 +42,42 @@ export function getMochaGrepOptsForEnv(
   env = process.env.ENVIRONMENT
 ) {
   const normalized = (env || '').toLowerCase()
+  const featureFlagLookaheads = getFeatureFlagExcludeLookaheads()
   if (normalized === 'dev') {
-    return options.andGrep ? { grep: options.andGrep } : {}
+    if (!featureFlagLookaheads) {
+      return options.andGrep ? { grep: options.andGrep } : {}
+    }
+    const base = options.andGrep
+      ? `^(?=.*${escapeRegex(options.andGrep)})`
+      : '^'
+    return { grep: new RegExp(`${base}${featureFlagLookaheads}.*$`) }
   }
 
   const strictExclude = STRICT_EXCLUDE_DEV_ENVS.includes(normalized)
 
   if (options.andGrep) {
+    const andGrep = escapeRegex(options.andGrep)
     if (strictExclude) {
-      // Exclude all @dev
       return {
-        grep: new RegExp(`^(?=.*${escapeRegex(options.andGrep)})(?!.*@dev).*$`)
+        grep: new RegExp(
+          `^(?=.*${andGrep})(?!.*@dev)${featureFlagLookaheads}.*$`
+        )
       }
     }
-    // Exclude @dev unless the test also has @ci (e.g. staging)
     return {
       grep: new RegExp(
-        `^(?=.*${escapeRegex(options.andGrep)})(?=(?:.*@ci|(?!.*@dev))).*$`
+        `^(?=.*${andGrep})(?=(?:.*@ci|(?!.*@dev)))${featureFlagLookaheads}.*$`
       )
     }
   }
 
   if (strictExclude) {
-    return { grep: '@dev', invert: true }
+    return {
+      grep: new RegExp(`^(?!.*@dev)${featureFlagLookaheads}.*$`)
+    }
   }
   return {
-    grep: /^(?=(?:.*@ci|(?!.*@dev))).*$/
+    grep: new RegExp(`^(?=(?:.*@ci|(?!.*@dev)))${featureFlagLookaheads}.*$`)
   }
 }
 
@@ -58,6 +87,16 @@ function escapeRegex(s) {
 
 /** Specs for compatibility runs (single smoke test against all browsers). */
 const compatibilitySpecs = ['./test/specs/non-prod/select_single_action.e2e.js']
+
+/**
+ * Mocha grep for CI: @ci with feature-flag exclusions.
+ */
+export function getMochaGrepOptsForCI() {
+  const lookaheads = getFeatureFlagExcludeLookaheads()
+  return {
+    grep: new RegExp(`^(?=.*@ci)${lookaheads}.*$`)
+  }
+}
 
 /**
  * Returns specs for BrowserStack runs.
