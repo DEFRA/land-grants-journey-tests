@@ -1,5 +1,7 @@
 import fs from 'node:fs'
-import { getMochaGrepOptsForCI } from './wdio.specs.js'
+import { ensureAllFeatureFlagsOn, getMochaGrepOptsForCI } from './wdio.specs.js'
+
+ensureAllFeatureFlagsOn()
 
 export const config = {
   hostname: 'selenium-chrome',
