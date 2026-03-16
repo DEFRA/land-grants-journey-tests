@@ -16,6 +16,18 @@ const TAG_TO_FLAG = {
   '@upl8': 'ENABLE_UPL_8_AND_10_20260303'
 }
 
+/**
+ * Set all TAG_TO_FLAG env vars to 'true' if not already set.
+ * Call from wdio.ci.conf.js so CI runs all feature-flagged tests by default.
+ */
+export function ensureAllFeatureFlagsOn() {
+  for (const flag of Object.values(TAG_TO_FLAG)) {
+    if (!process.env[flag]) {
+      process.env[flag] = 'true'
+    }
+  }
+}
+
 function getFeatureFlagExcludeLookaheads() {
   const parts = []
   for (const [tag, flag] of Object.entries(TAG_TO_FLAG)) {
