@@ -106,9 +106,14 @@ describe('Single action selection and funding details verification @cdp @ci', ()
           const submitButton = await SubmitYourApplicationPage.submitButton()
           await submitButton.click()
           await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
-          await HomePage.clearApplicationState()
-          await ConfirmYourDetailsPage.signOutAndConfirm()
-          await browser.deleteAllCookies()
+        })
+        after(async () => {
+          try {
+            await HomePage.clearApplicationState()
+            await ConfirmYourDetailsPage.signOutAndConfirm()
+          } finally {
+            await browser.deleteAllCookies()
+          }
         })
       })
     })
