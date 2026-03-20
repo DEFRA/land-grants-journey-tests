@@ -5,6 +5,10 @@ class ConfirmationPage extends Page {
     const el = await $('//h1/following-sibling::div[1]/strong')
     return await el.getText()
   }
+
+  async printSubmittedApplication() {
+    await $('=View / Print submitted application (opens in new tab)').click()
+  }
 }
 
 export default new ConfirmationPage()
