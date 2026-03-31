@@ -1,4 +1,4 @@
-import { browser } from '@wdio/globals'
+import { browser, expect } from '@wdio/globals'
 
 import HomePage from 'page-objects/home.page.js'
 import LoginPage from 'page-objects/login.page.js'
@@ -10,7 +10,7 @@ afterEach(async () => {
   await browser.deleteAllCookies()
 })
 
-describe('Missing Personal Details or Business details for a Farmer @cdp @dev', () => {
+describe('Missing Personal Details or Business details for a Farmer @cdp @ci @dev', () => {
   describe('SBI 400000008 - Title for Farmer is missing', async () => {
     it('Then farmer is shown validation message and not allowed to complete the application', async () => {
       const crn = '1400000008'
@@ -53,6 +53,22 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @dev', 
       await ConfirmYourDetailsPage.validateMissingDetailsWarning()
       await ConfirmYourDetailsPage.validateValueEmptyFor('City')
       await ConfirmYourDetailsPage.validateContinueButtonDisabled()
+    })
+  })
+
+  describe('SBI 400000008 - Farmer with missing details cannot bypass validation by navigating directly to a later page', async () => {
+    it('Then the farmer is redirected back to confirm-farm-details page', async () => {
+      const crn = '1400000008'
+      const sbi = '400000008'
+      await HomePage.clearApplicationStateWithApi(crn, sbi)
+
+      await HomePage.open()
+      await LoginPage.login(crn)
+
+      await browser.url('/farm-payments/confirm-you-will-be-eligible')
+      await expect(browser).toHaveUrl(
+        expect.stringContaining('/confirm-farm-details')
+      )
     })
   })
 })
