@@ -17,7 +17,8 @@ const testCases = [
     crn: '1103623923',
     sbi: '107365747',
     parcel: 'SD7858-1059',
-    expectedActionText: 'Assess moorland and produce a written record: CMOR1'
+    expectedActionText: 'Assess moorland and produce a written record: CMOR1',
+    tags: '@compatibility'
   },
   {
     action: 'UPL8',
