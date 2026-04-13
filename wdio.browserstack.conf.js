@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import { getCapabilitiesForRun } from './wdio.browserstack.capabilities.js'
 import {
-  getMochaGrepOptsForEnv,
+  getMochaGrepOptsForBrowserStack,
   getSpecsForBrowserStack
 } from './wdio.specs.js'
 
@@ -98,7 +98,7 @@ export const config = {
   mochaOpts: {
     ui: 'bdd',
     timeout: oneMinute * 10,
-    ...getMochaGrepOptsForEnv({ andGrep: '@cdp' })
+    ...getMochaGrepOptsForBrowserStack({ andGrep: '@cdp' })
   },
 
   // Hooks

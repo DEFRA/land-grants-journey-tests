@@ -111,6 +111,25 @@ export function getMochaGrepOptsForCI() {
 }
 
 /**
+ * Mocha grep for BrowserStack runs:
+ * - compatibility=true: run only the dedicated compatibility scenario
+ * - compatibility=false: use standard env filtering with optional andGrep
+ */
+export function getMochaGrepOptsForBrowserStack(options = {}) {
+  const runCompatibility =
+    (process.env.RUN_COMPATIBILITY_TESTS || '').toLowerCase() === 'true'
+
+  if (runCompatibility) {
+    const lookaheads = getFeatureFlagExcludeLookaheads()
+    return {
+      grep: new RegExp(`^(?=.*@cdp)(?=.*@compatibility)${lookaheads}.*$`)
+    }
+  }
+
+  return getMochaGrepOptsForEnv(options)
+}
+
+/**
  * Returns specs for BrowserStack runs.
  * - When RUN_COMPATIBILITY_TESTS=true: only select_single_action.e2e.js
  * - Otherwise: normal env-based specs (getSpecsForEnv)
