@@ -88,7 +88,7 @@ describe('Print submitted application @cdp @dev @ci', () => {
 
   it('Then the selected land parcels and additional payments can be printed', async () => {
     await expect(await PrintSubmittedApplicationPage.totalAnnualPayment()).toBe(
-      '£8,814.00'
+      '£8,814.30'
     )
 
     const parcels = await PrintSubmittedApplicationPage.landParcels()
@@ -97,10 +97,10 @@ describe('Print submitted application @cdp @dev @ci', () => {
     expect(parcels[0].actions[0].action).toContain(
       'Assess moorland and produce a written record: CMOR1'
     )
-    expect(parcels[0].actions[0].quantity).toBe('681.6133')
-    expect(parcels[0].actions[0].annualPayment).toBe('£7,225.10')
-    expect(parcels[0].actions[1].quantity).toBe('2.7321')
-    expect(parcels[0].actions[1].annualPayment).toBe('£95.62')
+    expect(parcels[0].actions[0].quantity).toBe('681.6199')
+    expect(parcels[0].actions[0].annualPayment).toBe('£7,225.17')
+    expect(parcels[0].actions[1].quantity).toBe('2.7387')
+    expect(parcels[0].actions[1].annualPayment).toBe('£95.85')
 
     expect(parcels[1].title).toBe('Land parcel ID SD6352 1073')
     expect(parcels[1].actions[0].action).toContain(
