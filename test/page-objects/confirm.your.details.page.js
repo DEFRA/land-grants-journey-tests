@@ -1,4 +1,4 @@
-import { browser, expect } from '@wdio/globals'
+import { $, browser, expect } from '@wdio/globals'
 import { Page } from './page.js'
 
 class ConfirmYourDetailsPage extends Page {
@@ -58,7 +58,7 @@ class ConfirmYourDetailsPage extends Page {
   }
 
   async validateContinueButtonDisabled() {
-    const continueButton = await $("button[type='submit']")
+    const continueButton = await $("button[type='submit']=Continue")
     await expect(continueButton).toBeDisabled()
   }
 }
