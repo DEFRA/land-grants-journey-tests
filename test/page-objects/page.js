@@ -13,8 +13,8 @@ class Page {
     return browser.url(path)
   }
 
-  async clickButton(selector) {
-    const button = await $("button[type='submit']")
+  async clickButton(buttonText) {
+    const button = await $(`button[type='submit']=` + buttonText)
     await button.click()
   }
 
