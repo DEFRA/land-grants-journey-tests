@@ -17,17 +17,18 @@ import {
   getCurrentWindowHandle,
   closeCurrentTabAndSwitch
 } from '~/test/utils/window.handler.js'
+import Backend from '~/test/utils/backend.js'
 
 describe('Print submitted application @cdp @dev @ci', () => {
   const crn = '1102760349'
   const sbi = '121428499'
 
   before(async () => {
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.deleteState(crn, sbi)
   })
 
   after(async () => {
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.deleteState(crn, sbi)
   })
 
   it('Given the farmer submits an application', async () => {

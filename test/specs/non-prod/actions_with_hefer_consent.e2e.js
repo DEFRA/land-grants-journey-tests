@@ -11,6 +11,7 @@ import SubmitYourApplicationPage from 'page-objects/submit.your.application.page
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import LoginPage from 'page-objects/login.page.js'
 import YouMustHaveConsentPage from 'page-objects/you.must.have.consent.page.js'
+import Backend from '~/test/utils/backend.js'
 
 describe('Actions that require HEFER Consent @cdp @ci @hefer', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -22,7 +23,7 @@ describe('Actions that require HEFER Consent @cdp @ci @hefer', () => {
       const actionTwo = 'CMOR1'
 
       before(async () => {
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
+        await Backend.deleteState(crn, sbi)
       })
 
       it('Then the farmer is shown the landing page', async () => {

@@ -1,8 +1,8 @@
 import { browser, expect } from '@wdio/globals'
 
-import HomePage from 'page-objects/home.page.js'
 import ActionsPage from 'page-objects/select.actions.page.js'
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
+import Backend from '~/test/utils/backend.js'
 
 afterEach(async () => {
   // Clear all cookies after each test
@@ -19,7 +19,7 @@ describe('CMOR1 action - land parcel has no intersection with the moorland data 
       const action = 'UPL1'
 
       before(async () => {
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
+        await Backend.deleteState(crn, sbi)
       })
 
       await performActionSelection({ crn, sbi, parcel, action })
