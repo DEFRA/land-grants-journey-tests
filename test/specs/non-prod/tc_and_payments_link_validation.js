@@ -1,6 +1,5 @@
 import { browser, expect } from '@wdio/globals'
 
-import HomePage from 'page-objects/home.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
 import {
@@ -9,6 +8,7 @@ import {
   closeCurrentTabAndSwitch
 } from '~/test/utils/window.handler.js'
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
+import Backend from '~/test/utils/backend.js'
 import ReviewTheActionsYouHaveSelectedPage from 'page-objects/review.the.actions.page.js'
 
 afterEach(async () => {
@@ -22,7 +22,7 @@ describe('When clicking the Payments link, Terms & Conditions link and Farm Paym
     const sbi = '121428499'
     const parcel = 'SD5949-6060'
     const action = 'CMOR1'
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.deleteState(crn, sbi)
 
     await performActionSelection({ crn, sbi, parcel, action })
     await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(

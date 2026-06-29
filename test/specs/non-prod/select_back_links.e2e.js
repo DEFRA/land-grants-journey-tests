@@ -1,9 +1,9 @@
 import { browser, expect } from '@wdio/globals'
 
-import HomePage from 'page-objects/home.page.js'
 import SelectLandParcelsPage from 'page-objects/select.land.parcels.page.js'
 import ReviewTheActionsYouHaveSelectedPage from 'page-objects/review.the.actions.page.js'
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
+import Backend from '~/test/utils/backend.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
 
 const crn = '1103623923'
@@ -23,7 +23,7 @@ describe('Selecting back link through the journey @cdp @ci @dev', () => {
       const expectedActionText =
         'Assess moorland and produce a written record: CMOR1'
 
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.deleteState(crn, sbi)
       await performActionSelection({
         crn,
         sbi,

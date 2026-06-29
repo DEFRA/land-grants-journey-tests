@@ -3,6 +3,7 @@ import { browser, expect } from '@wdio/globals'
 import HomePage from 'page-objects/home.page.js'
 import LoginPage from 'page-objects/login.page.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
+import Backend from '~/test/utils/backend.js'
 
 afterEach(async () => {
   // Sign out and then clear all cookies after each test
@@ -15,7 +16,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
     it('Then farmer is shown validation message and not allowed to complete the application', async () => {
       const crn = '1400000008'
       const sbi = '400000008'
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.deleteState(crn, sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
@@ -30,7 +31,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
     it('Then farmer is shown validation message and not allowed to complete the application', async () => {
       const crn = '1400000006'
       const sbi = '400000006'
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.deleteState(crn, sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
@@ -45,7 +46,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
     it('Then farmer is shown validation message and not allowed to complete the application', async () => {
       const crn = '1400000002'
       const sbi = '400000002'
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.deleteState(crn, sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
@@ -60,7 +61,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
     it('Then the farmer is redirected back to confirm-farm-details page', async () => {
       const crn = '1400000008'
       const sbi = '400000008'
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.deleteState(crn, sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
