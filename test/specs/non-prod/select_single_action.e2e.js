@@ -38,11 +38,15 @@ describe('Single action selection and funding details verification @cdp @ci', ()
     const tagStr = tags ? ` ${tags}` : ''
     describe(`Given farmer applies only for ${action}${tagStr}`.trim(), () => {
       describe('When farmer goes through the land grants application', () => {
-        it('Then the farmer is shown the landing page', async () => {
-          await browser.deleteAllCookies()
+        before(async () => {
+          await browser.reloadSession()
           await Backend.deleteState(crn, sbi)
           await HomePage.open()
           await LoginPage.login(crn)
+        })
+
+        it('Then the farmer is shown the landing page', async () => {
+          await expect(browser).toHaveTitle(new RegExp(SERVICE_NAME))
         })
 
         it('Then the farmer is shown confirm your details page', async () => {
