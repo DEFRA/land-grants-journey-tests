@@ -111,12 +111,17 @@ export const config = {
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
   baseUrl:
-    process.env.ENVIRONMENT === 'prod'
+    process.env.BASE_URL ||
+    (process.env.ENVIRONMENT === 'prod'
       ? 'https://grants.defra.gov.uk/farm-payments'
       : process.env.ENVIRONMENT
         ? `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
-        : 'http://localhost:3000',
-  baseBackendUrl: `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
+        : 'http://localhost:3000'),
+  baseBackendUrl:
+    process.env.BASE_BACKEND_URL ||
+    (process.env.ENVIRONMENT
+      ? `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
+      : 'http://localhost:3001'),
   // To run test on your local activate below baseUrls and comment out above baseUrl and baseBackendUrl
   // baseUrl: `http://localhost:3000`,
   // baseBackendUrl: `http://localhost:3001`,
@@ -315,6 +320,10 @@ export const config = {
    * @param {<Object>} results object containing test results
    */
   onComplete: function (exitCode, config, capabilities, results) {
+    if ((process.env.SKIP_ALLURE_REPORT || '').toLowerCase() === 'true') {
+      return
+    }
+
     const reportError = new Error('Could not generate Allure report')
     const generation = allure(['generate', 'allure-results', '--clean'])
 

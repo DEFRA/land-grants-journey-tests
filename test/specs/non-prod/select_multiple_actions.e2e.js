@@ -26,6 +26,14 @@ describe('Multiple actions selection and funding details verification @cdp @ci',
         await HomePage.clearApplicationStateWithApi(crn, sbi)
       })
 
+      after(async () => {
+        try {
+          await HomePage.clearApplicationStateWithApi(crn, sbi)
+        } finally {
+          await browser.deleteAllCookies()
+        }
+      })
+
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await LoginPage.login(crn)
@@ -122,7 +130,6 @@ describe('Multiple actions selection and funding details verification @cdp @ci',
         const submitButton = await SubmitYourApplicationPage.submitButton()
         await submitButton.click()
         await expect(browser).toHaveTitle(`Confirmation | ${SERVICE_NAME}`)
-        await HomePage.clearApplicationState()
       })
     })
   })

@@ -53,6 +53,16 @@ DEFRA_ID_USER_PASSWORD
 npm run test:local
 ```
 
+If you are running the `grants-ui` Docker stack locally, with the UI on port `3000`, backend on `3001`, and MockServer
+on `1080`, you can use the local stack defaults from `.env.local.stack`:
+
+```bash
+npm run test:local:stack
+```
+
+This uses the development defaults from the `grants-ui` compose setup. To change them, edit `.env.local.stack` or
+override values in your shell. To generate an Allure report locally, install Java and run with `SKIP_ALLURE_REPORT=false`.
+
 ### Debugging local tests
 
 ```bash

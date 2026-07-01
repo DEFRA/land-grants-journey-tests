@@ -25,6 +25,14 @@ describe('Actions that require HEFER Consent @cdp @ci @hefer', () => {
         await HomePage.clearApplicationStateWithApi(crn, sbi)
       })
 
+      after(async () => {
+        try {
+          await HomePage.clearApplicationStateWithApi(crn, sbi)
+        } finally {
+          await browser.deleteAllCookies()
+        }
+      })
+
       it('Then the farmer is shown the landing page', async () => {
         await HomePage.open()
         await LoginPage.login(crn)

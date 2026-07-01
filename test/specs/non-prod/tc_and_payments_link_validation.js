@@ -11,15 +11,19 @@ import {
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
 import ReviewTheActionsYouHaveSelectedPage from 'page-objects/review.the.actions.page.js'
 
+const crn = '1102760349'
+const sbi = '121428499'
+
 afterEach(async () => {
-  // Light cleanup between tests
-  await browser.deleteAllCookies()
+  try {
+    await HomePage.clearApplicationStateWithApi(crn, sbi)
+  } finally {
+    await browser.deleteAllCookies()
+  }
 })
 
 describe('When clicking the Payments link, Terms & Conditions link and Farm Payment Actions link @cdp', () => {
   it('farmer is shown the correct page ', async () => {
-    const crn = '1102760349'
-    const sbi = '121428499'
     const parcel = 'SD5949-6060'
     const action = 'CMOR1'
     await HomePage.clearApplicationStateWithApi(crn, sbi)

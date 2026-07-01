@@ -110,8 +110,7 @@ describe('Single action selection and funding details verification @cdp @ci', ()
         })
         after(async () => {
           try {
-            await HomePage.clearApplicationState()
-            await ConfirmYourDetailsPage.signOutAndConfirm()
+            await HomePage.clearApplicationStateWithApi(crn, sbi)
           } finally {
             await browser.deleteAllCookies()
           }

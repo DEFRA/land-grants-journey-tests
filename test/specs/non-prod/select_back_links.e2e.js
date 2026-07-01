@@ -10,8 +10,11 @@ const crn = '1103623923'
 const sbi = '107365747'
 
 afterEach(async () => {
-  // Clear all cookies after each test
-  await browser.deleteAllCookies()
+  try {
+    await HomePage.clearApplicationStateWithApi(crn, sbi)
+  } finally {
+    await browser.deleteAllCookies()
+  }
 })
 
 describe('Selecting back link through the journey @cdp @ci @dev', () => {
