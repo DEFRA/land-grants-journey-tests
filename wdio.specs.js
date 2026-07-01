@@ -18,7 +18,7 @@ const TAG_TO_FLAG = {
 
 /**
  * Set all TAG_TO_FLAG env vars to 'true' if not already set.
- * Call from wdio.ci.conf.js so CI runs all feature-flagged tests by default.
+ * Call from CI configs so CI runs all feature-flagged tests by default.
  */
 export function ensureAllFeatureFlagsOn() {
   for (const flag of Object.values(TAG_TO_FLAG)) {

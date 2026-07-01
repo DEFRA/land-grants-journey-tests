@@ -1,5 +1,11 @@
 import allure from 'allure-commandline'
-import { getMochaGrepOptsForEnv, getSpecsForEnv } from './wdio.specs.js'
+import {
+  ensureAllFeatureFlagsOn,
+  getMochaGrepOptsForEnv,
+  getSpecsForEnv
+} from './wdio.specs.js'
+
+ensureAllFeatureFlagsOn()
 
 const oneMinute = 60 * 1000
 

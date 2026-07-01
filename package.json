@@ -23,6 +23,7 @@
     "test:local:stack": "npm run clean && node --env-file=.env.local.stack ./node_modules/@wdio/cli/bin/wdio.js run wdio.local.conf.js",
     "test:local:debug": "npm run clean && DEBUG=true wdio run wdio.local.conf.js",
     "test:github": "npm run clean && wdio run wdio.github.conf.js",
+    "test:config": "node --test test/config/*.test.js",
     "format": "prettier --write 'test/**/*.js' '**/*.{js,md,json,config.js}'",
     "format:check": "prettier --check 'test/**/*.js' '**/*.{js,md,json,config.js}'",
     "git:pre-commit-hook": "npm run format:check && npm run lint",
