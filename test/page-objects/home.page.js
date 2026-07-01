@@ -15,6 +15,13 @@ class HomePage extends Page {
     // If RUN_ENV is not set or not 'local', use the environment backend URL
     // Otherwise use the ephemeral test backend URL
     const grantCode = 'farm-payments'
+    // Must match the grantVersion farm-payments state is persisted under,
+    // otherwise the DELETE targets a non-existent document (backend defaults
+    // grantVersion to 1.0.0), 404s, and silently leaves the real state in place.
+    // TODO: hardcoded for now - resolve this dynamically (e.g. probe the backend
+    // like grants-ui/acceptance's Backend.resolveGrantVersion does) so it doesn't
+    // silently break again next time farm-payments' version bumps.
+    const grantVersion = '1.1.0'
     const backendUrl =
       process.env.RUN_ENV !== 'local'
         ? browser.options.baseBackendUrl
@@ -27,16 +34,26 @@ class HomePage extends Page {
       process.env.RUN_ENV !== 'local'
         ? {
             Authorization: `Bearer ${getBackendAuthorizationToken()}`,
-            'x-application-lock-owner': mintLockToken(crn, sbi, grantCode)
+            'x-application-lock-owner': mintLockToken(
+              crn,
+              sbi,
+              grantCode,
+              grantVersion
+            )
           }
         : {
             'x-api-key': process.env.GRANTS_UI_BACKEND_API_KEY,
             Authorization: `Bearer ${getBackendAuthorizationToken()}`,
-            'x-application-lock-owner': mintLockToken(crn, sbi, grantCode)
+            'x-application-lock-owner': mintLockToken(
+              crn,
+              sbi,
+              grantCode,
+              grantVersion
+            )
           }
 
     const response = await fetch(
-      `${backendUrl}/state?sbi=${sbi}&grantCode=${grantCode}`,
+      `${backendUrl}/state?sbi=${sbi}&grantCode=${grantCode}&grantVersion=${grantVersion}`,
       {
         method: 'DELETE',
         headers
