@@ -1,19 +1,19 @@
-import { browser, expect } from '@wdio/globals'
+import { expect } from '@wdio/globals'
 
 import HomePage from 'page-objects/home.page.js'
 import LoginPage from 'page-objects/login.page.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
+import { signOutAndClearCookies } from '~/test/utils/session.js'
 
 afterEach(async () => {
-  // Sign out and then clear all cookies after each test
-  await ConfirmYourDetailsPage.signOutAndConfirm()
-  await browser.deleteAllCookies()
+  await signOutAndClearCookies()
 })
 
 describe('Contact Details validation for a SBI @cdp @dev', () => {
   it('SBI 300000011 - Unstructured contact details are shown correctly', async () => {
     const crn = '1300000011'
     const sbi = '300000011'
+    await signOutAndClearCookies()
     await HomePage.clearApplicationStateWithApi(crn, sbi)
 
     await HomePage.open()
@@ -48,6 +48,7 @@ describe('Contact Details validation for a SBI @cdp @dev', () => {
   it('SBI 300000001 - Structured contact details are shown correctly', async () => {
     const crn = '1300000001'
     const sbi = '300000001'
+    await signOutAndClearCookies()
     await HomePage.clearApplicationStateWithApi(crn, sbi)
 
     await HomePage.open()
@@ -79,6 +80,7 @@ describe('Contact Details validation for a SBI @cdp @dev', () => {
   it('SBI 106440951 - Structured contact details are shown correctly', async () => {
     const crn = '1103019058'
     const sbi = '106440951'
+    await signOutAndClearCookies()
     await HomePage.clearApplicationStateWithApi(crn, sbi)
 
     await HomePage.open()
@@ -116,6 +118,7 @@ describe('Contact Details validation for a SBI @cdp @dev', () => {
   it('SBI 107034848 - Structured contact details are shown correctly', async () => {
     const crn = '1103711172'
     const sbi = '107034848'
+    await signOutAndClearCookies()
     await HomePage.clearApplicationStateWithApi(crn, sbi)
 
     await HomePage.open()
