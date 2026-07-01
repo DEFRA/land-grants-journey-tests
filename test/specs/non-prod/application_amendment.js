@@ -10,7 +10,6 @@ import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligi
 import LoginPage from 'page-objects/login.page.js'
 import ConfirmationPage from 'page-objects/confirmation.page.js'
 import Gas from '~/test/utils/gas.js'
-import Backend from '~/test/utils/backend.js'
 
 describe('Amend an application @ci', () => {
   const crn = '1102760349'
@@ -24,11 +23,11 @@ describe('Amend an application @ci', () => {
   let applicationAmendExpectationId
 
   before(async () => {
-    await Backend.deleteState(crn, sbi)
+    await HomePage.clearApplicationStateWithApi(crn, sbi)
   })
 
   after(async () => {
-    await Backend.deleteState(crn, sbi)
+    await HomePage.clearApplicationStateWithApi(crn, sbi)
     if (applicationAmendExpectationId) {
       await Gas.clearExpectation(applicationAmendExpectationId)
     }

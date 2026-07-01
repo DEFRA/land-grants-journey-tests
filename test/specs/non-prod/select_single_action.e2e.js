@@ -10,7 +10,6 @@ import { SERVICE_NAME } from '~/test/utils/config.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
-import Backend from '~/test/utils/backend.js'
 
 const testCases = [
   {
@@ -39,8 +38,7 @@ describe('Single action selection and funding details verification @cdp @ci', ()
     describe(`Given farmer applies only for ${action}${tagStr}`.trim(), () => {
       describe('When farmer goes through the land grants application', () => {
         it('Then the farmer is shown the landing page', async () => {
-          await browser.deleteAllCookies()
-          await Backend.deleteState(crn, sbi)
+          await HomePage.clearApplicationStateWithApi(crn, sbi)
           await HomePage.open()
           await LoginPage.login(crn)
         })

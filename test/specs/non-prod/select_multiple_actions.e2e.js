@@ -10,7 +10,6 @@ import { SERVICE_NAME } from '~/test/utils/config.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import LoginPage from 'page-objects/login.page.js'
-import Backend from '~/test/utils/backend.js'
 
 describe('Multiple actions selection and funding details verification @cdp @ci', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -24,7 +23,7 @@ describe('Multiple actions selection and funding details verification @cdp @ci',
       const actionTwo = 'UPL2'
 
       before(async () => {
-        await Backend.deleteState(crn, sbi)
+        await HomePage.clearApplicationStateWithApi(crn, sbi)
       })
 
       it('Then the farmer is shown the landing page', async () => {

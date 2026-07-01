@@ -11,7 +11,6 @@ import SubmitYourApplicationPage from 'page-objects/submit.your.application.page
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import LoginPage from 'page-objects/login.page.js'
 import YouMustHaveConsentPage from 'page-objects/you.must.have.consent.page.js'
-import Backend from '~/test/utils/backend.js'
 
 describe('Actions that require SSSI and HEFER Consent @cdp @ci @hefer', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -23,7 +22,7 @@ describe('Actions that require SSSI and HEFER Consent @cdp @ci @hefer', () => {
       const actionTwo = 'UPL2'
 
       before(async () => {
-        await Backend.deleteState(crn, sbi)
+        await HomePage.clearApplicationStateWithApi(crn, sbi)
       })
 
       it('Then the farmer is shown the landing page', async () => {
