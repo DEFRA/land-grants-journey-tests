@@ -15,51 +15,51 @@ class HomePage extends Page {
     // If RUN_ENV is not set or not 'local', use the environment backend URL
     // Otherwise use the ephemeral test backend URL
     const grantCode = 'farm-payments'
-    // Must match the grantVersion farm-payments state is persisted under,
-    // otherwise the DELETE targets a non-existent document (backend defaults
-    // grantVersion to 1.0.0), 404s, and silently leaves the real state in place.
-    // TODO: hardcoded for now - resolve this dynamically (e.g. probe the backend
-    // like grants-ui/acceptance's Backend.resolveGrantVersion does) so it doesn't
-    // silently break again next time farm-payments' version bumps.
-    const grantVersion = '1.1.0'
+    // Delete the known versions used by local and deployed environments so
+    // stale state cannot survive when the configured version differs.
+    const grantVersions = ['1', '1.0.0', '1.1.0']
     const backendUrl =
       process.env.RUN_ENV !== 'local'
         ? browser.options.baseBackendUrl
         : `https://ephemeral-protected.api.${process.env.ENVIRONMENT}.cdp-int.defra.cloud/grants-ui-backend`
     console.log('backendUrl: ', backendUrl)
 
-    // If RUN_ENV is not set or not 'local', use the headers without x-api-key
-    // Otherwise use the headers with x-api-key
-    const headers =
-      process.env.RUN_ENV !== 'local'
-        ? {
-            Authorization: `Bearer ${getBackendAuthorizationToken()}`,
-            'x-application-lock-owner': mintLockToken(
-              crn,
-              sbi,
-              grantCode,
-              grantVersion
-            )
-          }
-        : {
-            'x-api-key': process.env.GRANTS_UI_BACKEND_API_KEY,
-            Authorization: `Bearer ${getBackendAuthorizationToken()}`,
-            'x-application-lock-owner': mintLockToken(
-              crn,
-              sbi,
-              grantCode,
-              grantVersion
-            )
-          }
+    for (const grantVersion of grantVersions) {
+      // If RUN_ENV is not set or not 'local', use the headers without x-api-key
+      // Otherwise use the headers with x-api-key
+      const headers =
+        process.env.RUN_ENV !== 'local'
+          ? {
+              Authorization: `Bearer ${getBackendAuthorizationToken()}`,
+              'x-application-lock-owner': mintLockToken(
+                crn,
+                sbi,
+                grantCode,
+                grantVersion
+              )
+            }
+          : {
+              'x-api-key': process.env.GRANTS_UI_BACKEND_API_KEY,
+              Authorization: `Bearer ${getBackendAuthorizationToken()}`,
+              'x-application-lock-owner': mintLockToken(
+                crn,
+                sbi,
+                grantCode,
+                grantVersion
+              )
+            }
 
-    const response = await fetch(
-      `${backendUrl}/state?sbi=${sbi}&grantCode=${grantCode}&grantVersion=${grantVersion}`,
-      {
-        method: 'DELETE',
-        headers
-      }
-    )
-    await expect(response.status === 200 || response.status === 404).toBe(true)
+      const response = await fetch(
+        `${backendUrl}/state?sbi=${sbi}&grantCode=${grantCode}&grantVersion=${grantVersion}`,
+        {
+          method: 'DELETE',
+          headers
+        }
+      )
+      await expect(response.status === 200 || response.status === 404).toBe(
+        true
+      )
+    }
   }
 }
 
