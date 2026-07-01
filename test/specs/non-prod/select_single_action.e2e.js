@@ -11,6 +11,11 @@ import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 
+async function signOutAndClearCookies() {
+  await browser.url('/auth/sign-out')
+  await browser.deleteAllCookies()
+}
+
 const testCases = [
   {
     action: 'CMOR1',
@@ -37,10 +42,15 @@ describe('Single action selection and funding details verification @cdp @ci', ()
     const tagStr = tags ? ` ${tags}` : ''
     describe(`Given farmer applies only for ${action}${tagStr}`.trim(), () => {
       describe('When farmer goes through the land grants application', () => {
-        it('Then the farmer is shown the landing page', async () => {
+        before(async () => {
+          await signOutAndClearCookies()
           await HomePage.clearApplicationStateWithApi(crn, sbi)
           await HomePage.open()
           await LoginPage.login(crn)
+        })
+
+        it('Then the farmer is shown the landing page', async () => {
+          await expect(browser).toHaveTitle(new RegExp(SERVICE_NAME))
         })
 
         it('Then the farmer is shown confirm your details page', async () => {
@@ -112,7 +122,7 @@ describe('Single action selection and funding details verification @cdp @ci', ()
           try {
             await HomePage.clearApplicationStateWithApi(crn, sbi)
           } finally {
-            await browser.deleteAllCookies()
+            await signOutAndClearCookies()
           }
         })
       })
