@@ -10,6 +10,7 @@ import {
 } from '~/test/utils/window.handler.js'
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
 import ReviewTheActionsYouHaveSelectedPage from 'page-objects/review.the.actions.page.js'
+import { signOutAndClearCookies } from '~/test/utils/session.js'
 
 const crn = '1102760349'
 const sbi = '121428499'
@@ -18,7 +19,7 @@ afterEach(async () => {
   try {
     await HomePage.clearApplicationStateWithApi(crn, sbi)
   } finally {
-    await browser.deleteAllCookies()
+    await signOutAndClearCookies()
   }
 })
 

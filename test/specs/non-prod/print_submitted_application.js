@@ -17,17 +17,23 @@ import {
   getCurrentWindowHandle,
   closeCurrentTabAndSwitch
 } from '~/test/utils/window.handler.js'
+import { signOutAndClearCookies } from '~/test/utils/session.js'
 
 describe('Print submitted application @cdp @dev @ci', () => {
   const crn = '1102760349'
   const sbi = '121428499'
 
   before(async () => {
+    await signOutAndClearCookies()
     await HomePage.clearApplicationStateWithApi(crn, sbi)
   })
 
   after(async () => {
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    try {
+      await HomePage.clearApplicationStateWithApi(crn, sbi)
+    } finally {
+      await signOutAndClearCookies()
+    }
   })
 
   it('Given the farmer submits an application', async () => {

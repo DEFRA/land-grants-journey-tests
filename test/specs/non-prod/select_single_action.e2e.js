@@ -10,11 +10,7 @@ import { SERVICE_NAME } from '~/test/utils/config.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
-
-async function signOutAndClearCookies() {
-  await browser.url('/auth/sign-out')
-  await browser.deleteAllCookies()
-}
+import { signOutAndClearCookies } from '~/test/utils/session.js'
 
 const testCases = [
   {

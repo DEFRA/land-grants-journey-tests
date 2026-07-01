@@ -5,8 +5,10 @@ import ConfirmYourLandDetailsPage from 'page-objects/confirm.your.land.details.j
 import SelectLandParcelsPage from 'page-objects/select.land.parcels.page.js'
 import ActionsPage from 'page-objects/select.actions.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
+import { signOutAndClearCookies } from '~/test/utils/session.js'
 
 export async function performActionSelection({ crn, sbi, parcel, action }) {
+  await signOutAndClearCookies()
   await HomePage.open()
   await LoginPage.login(crn)
   await ConfirmYourDetailsPage.clickButton('Continue')

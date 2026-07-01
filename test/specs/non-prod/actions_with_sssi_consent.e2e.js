@@ -11,6 +11,7 @@ import SubmitYourApplicationPage from 'page-objects/submit.your.application.page
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import LoginPage from 'page-objects/login.page.js'
 import YouMustHaveSssiConsentPage from 'page-objects/you.must.have.consent.page.js'
+import { signOutAndClearCookies } from '~/test/utils/session.js'
 
 describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -25,6 +26,7 @@ describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
       const actionThree = 'UPL10'
 
       before(async () => {
+        await signOutAndClearCookies()
         await HomePage.clearApplicationStateWithApi(crn, sbi)
       })
 
@@ -32,7 +34,7 @@ describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
         try {
           await HomePage.clearApplicationStateWithApi(crn, sbi)
         } finally {
-          await browser.deleteAllCookies()
+          await signOutAndClearCookies()
         }
       })
 
