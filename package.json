@@ -21,6 +21,7 @@
     "test:local:browserstack": "npm run clean && wdio run wdio.local.browserstack.conf.js",
     "test:local": "npm run clean && wdio run wdio.local.conf.js",
     "test:local:stack": "npm run clean && node --env-file=.env.local.stack ./node_modules/@wdio/cli/bin/wdio.js run wdio.local.conf.js",
+    "test:local:stack:repeat": "node tools/repeat-local-stack-tests.js",
     "test:local:debug": "npm run clean && DEBUG=true wdio run wdio.local.conf.js",
     "test:github": "npm run clean && wdio run wdio.github.conf.js",
     "format": "prettier --write 'test/**/*.js' '**/*.{js,md,json,config.js}'",
