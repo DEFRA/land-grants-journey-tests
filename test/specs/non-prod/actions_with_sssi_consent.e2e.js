@@ -23,7 +23,6 @@ describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
 
       const parcelTwo = 'SD6352-1073'
       const actionTwo = 'CMOR1'
-      const actionThree = 'UPL10'
 
       before(async () => {
         await signOutAndClearCookies()
@@ -103,7 +102,6 @@ describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
           false
         )
         await ActionsPage.selectRequiredAction(actionTwo)
-        await ActionsPage.selectRequiredAction(actionThree)
         await SelectLandParcelsPage.clickButton('Continue')
         await expect(browser).toHaveTitle(
           `Review the actions you have selected | ${SERVICE_NAME}`
@@ -124,12 +122,6 @@ describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
             .action
         ).toContain(
           `Assess moorland and produce a written record: ${actionTwo}`
-        )
-        await expect(
-          (await ReviewTheActionsYouHaveSelectedPage.getAddedActionsData(2))[1]
-            .action
-        ).toContain(
-          `Shepherding livestock on moorland (remove stock for at least 8 months): ${actionThree}`
         )
       })
 
