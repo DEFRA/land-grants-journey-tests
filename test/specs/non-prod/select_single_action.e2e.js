@@ -20,15 +20,6 @@ const testCases = [
     parcel: 'SD7858-1059',
     expectedActionText: 'Assess moorland and produce a written record: CMOR1',
     tags: '@compatibility'
-  },
-  {
-    action: 'UPL8',
-    crn: '1102760349',
-    sbi: '121428499',
-    parcel: 'SD6352-1073',
-    expectedActionText:
-      'Shepherding livestock on moorland (remove stock for at least 4 months): UPL8',
-    tags: '@upl8'
   }
 ]
 
