@@ -4,6 +4,7 @@ import HomePage from 'page-objects/home.page.js'
 import LoginPage from 'page-objects/login.page.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 afterEach(async () => {
   await signOutAndClearCookies()
@@ -14,7 +15,7 @@ describe('Contact Details validation for a SBI @cdp @dev', () => {
     const crn = '1300000011'
     const sbi = '300000011'
     await signOutAndClearCookies()
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
 
     await HomePage.open()
     await LoginPage.login(crn)
@@ -49,7 +50,7 @@ describe('Contact Details validation for a SBI @cdp @dev', () => {
     const crn = '1300000001'
     const sbi = '300000001'
     await signOutAndClearCookies()
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
 
     await HomePage.open()
     await LoginPage.login(crn)
@@ -81,7 +82,7 @@ describe('Contact Details validation for a SBI @cdp @dev', () => {
     const crn = '1103019058'
     const sbi = '106440951'
     await signOutAndClearCookies()
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
 
     await HomePage.open()
     await LoginPage.login(crn)
@@ -119,7 +120,7 @@ describe('Contact Details validation for a SBI @cdp @dev', () => {
     const crn = '1103711172'
     const sbi = '107034848'
     await signOutAndClearCookies()
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
 
     await HomePage.open()
     await LoginPage.login(crn)

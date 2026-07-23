@@ -18,6 +18,7 @@ import {
   closeCurrentTabAndSwitch
 } from '~/test/utils/window.handler.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 describe('Print submitted application @cdp @dev @ci', () => {
   const crn = '1102760349'
@@ -25,12 +26,12 @@ describe('Print submitted application @cdp @dev @ci', () => {
 
   before(async () => {
     await signOutAndClearCookies()
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
   })
 
   after(async () => {
     try {
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.clearTestData(sbi)
     } finally {
       await signOutAndClearCookies()
     }

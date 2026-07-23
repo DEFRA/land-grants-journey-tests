@@ -4,6 +4,7 @@ import HomePage from 'page-objects/home.page.js'
 import LoginPage from 'page-objects/login.page.js'
 import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 afterEach(async () => {
   await signOutAndClearCookies()
@@ -15,7 +16,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
       const crn = '1400000008'
       const sbi = '400000008'
       await signOutAndClearCookies()
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.clearTestData(sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
@@ -31,7 +32,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
       const crn = '1400000006'
       const sbi = '400000006'
       await signOutAndClearCookies()
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.clearTestData(sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
@@ -47,7 +48,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
       const crn = '1400000002'
       const sbi = '400000002'
       await signOutAndClearCookies()
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.clearTestData(sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)
@@ -63,7 +64,7 @@ describe('Missing Personal Details or Business details for a Farmer @cdp @ci @de
       const crn = '1400000008'
       const sbi = '400000008'
       await signOutAndClearCookies()
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.clearTestData(sbi)
 
       await HomePage.open()
       await LoginPage.login(crn)

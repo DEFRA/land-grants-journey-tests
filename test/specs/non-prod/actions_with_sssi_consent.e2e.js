@@ -12,6 +12,7 @@ import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligi
 import LoginPage from 'page-objects/login.page.js'
 import YouMustHaveSssiConsentPage from 'page-objects/you.must.have.consent.page.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -26,12 +27,12 @@ describe('Actions that require SSSI Consent @cdp @ci @sssi', () => {
 
       before(async () => {
         await signOutAndClearCookies()
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
+        await Backend.clearTestData(sbi)
       })
 
       after(async () => {
         try {
-          await HomePage.clearApplicationStateWithApi(crn, sbi)
+          await Backend.clearTestData(sbi)
         } finally {
           await signOutAndClearCookies()
         }
