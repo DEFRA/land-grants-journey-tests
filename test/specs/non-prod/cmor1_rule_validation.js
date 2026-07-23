@@ -1,21 +1,21 @@
 import { expect } from '@wdio/globals'
 
-import HomePage from 'page-objects/home.page.js'
 import ActionsPage from 'page-objects/select.actions.page.js'
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 const crn = '1102838829'
 const sbi = '106284736'
 
 beforeEach(async () => {
   await signOutAndClearCookies()
-  await HomePage.clearApplicationStateWithApi(crn, sbi)
+  await Backend.clearTestData(sbi)
 })
 
 afterEach(async () => {
   try {
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
   } finally {
     await signOutAndClearCookies()
   }

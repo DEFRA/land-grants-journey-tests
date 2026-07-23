@@ -11,6 +11,7 @@ import ConfirmYourDetailsPage from 'page-objects/confirm.your.details.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 const testCases = [
   {
@@ -31,7 +32,7 @@ describe('Single action selection and funding details verification @cdp @ci', ()
       describe('When farmer goes through the land grants application', () => {
         before(async () => {
           await signOutAndClearCookies()
-          await HomePage.clearApplicationStateWithApi(crn, sbi)
+          await Backend.clearTestData(sbi)
           await HomePage.open()
           await LoginPage.login(crn)
         })
@@ -107,7 +108,7 @@ describe('Single action selection and funding details verification @cdp @ci', ()
         })
         after(async () => {
           try {
-            await HomePage.clearApplicationStateWithApi(crn, sbi)
+            await Backend.clearTestData(sbi)
           } finally {
             await signOutAndClearCookies()
           }

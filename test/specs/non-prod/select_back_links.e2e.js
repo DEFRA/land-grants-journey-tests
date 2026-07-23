@@ -1,18 +1,18 @@
 import { browser, expect } from '@wdio/globals'
 
-import HomePage from 'page-objects/home.page.js'
 import SelectLandParcelsPage from 'page-objects/select.land.parcels.page.js'
 import ReviewTheActionsYouHaveSelectedPage from 'page-objects/review.the.actions.page.js'
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 const crn = '1103623923'
 const sbi = '107365747'
 
 afterEach(async () => {
   try {
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
   } finally {
     await signOutAndClearCookies()
   }
@@ -27,7 +27,7 @@ describe('Selecting back link through the journey @cdp @ci @dev', () => {
       const expectedActionText =
         'Assess moorland and produce a written record: CMOR1'
 
-      await HomePage.clearApplicationStateWithApi(crn, sbi)
+      await Backend.clearTestData(sbi)
       await performActionSelection({
         crn,
         sbi,

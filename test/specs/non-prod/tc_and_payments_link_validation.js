@@ -1,6 +1,5 @@
 import { browser, expect } from '@wdio/globals'
 
-import HomePage from 'page-objects/home.page.js'
 import SubmitYourApplicationPage from 'page-objects/submit.your.application.page.js'
 import { SERVICE_NAME } from '~/test/utils/config.js'
 import {
@@ -11,13 +10,14 @@ import {
 import { performActionSelection } from '~/test/utils/journey-helpers.js'
 import ReviewTheActionsYouHaveSelectedPage from 'page-objects/review.the.actions.page.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 const crn = '1102760349'
 const sbi = '121428499'
 
 afterEach(async () => {
   try {
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
   } finally {
     await signOutAndClearCookies()
   }
@@ -27,7 +27,7 @@ describe('When clicking the Payments link, Terms & Conditions link and Farm Paym
   it('farmer is shown the correct page ', async () => {
     const parcel = 'SD5949-6060'
     const action = 'CMOR1'
-    await HomePage.clearApplicationStateWithApi(crn, sbi)
+    await Backend.clearTestData(sbi)
 
     await performActionSelection({ crn, sbi, parcel, action })
     await ReviewTheActionsYouHaveSelectedPage.doYouWantToAddAnotherAction(

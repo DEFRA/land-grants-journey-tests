@@ -11,6 +11,7 @@ import SubmitYourApplicationPage from 'page-objects/submit.your.application.page
 import ConfirmYouWillBeEligiblePage from 'page-objects/confirm.you.will.be.eligible.page'
 import LoginPage from 'page-objects/login.page.js'
 import { signOutAndClearCookies } from '~/test/utils/session.js'
+import Backend from '~/test/utils/backend.js'
 
 describe('Multiple actions selection and funding details verification @cdp @ci', () => {
   describe('Given farmer is eligible for funding', () => {
@@ -25,12 +26,12 @@ describe('Multiple actions selection and funding details verification @cdp @ci',
 
       before(async () => {
         await signOutAndClearCookies()
-        await HomePage.clearApplicationStateWithApi(crn, sbi)
+        await Backend.clearTestData(sbi)
       })
 
       after(async () => {
         try {
-          await HomePage.clearApplicationStateWithApi(crn, sbi)
+          await Backend.clearTestData(sbi)
         } finally {
           await signOutAndClearCookies()
         }
