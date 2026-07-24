@@ -1,22 +1,9 @@
 import { browser, expect } from '@wdio/globals'
 import { getBackendAuthorizationToken } from './backend-auth-helper.js'
+import { resolveBackendUrl } from './backend-url.js'
 
 function backendUrl() {
-  if (browser.options.baseBackendUrl) {
-    return browser.options.baseBackendUrl
-  }
-
-  if (process.env.BASE_BACKEND_URL) {
-    return process.env.BASE_BACKEND_URL
-  }
-
-  if (process.env.RUN_ENV === 'local' && process.env.ENVIRONMENT) {
-    return `https://ephemeral-protected.api.${process.env.ENVIRONMENT}.cdp-int.defra.cloud/grants-ui-backend`
-  }
-
-  return process.env.ENVIRONMENT
-    ? `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
-    : 'http://localhost:3001'
+  return resolveBackendUrl({ baseBackendUrl: browser.options.baseBackendUrl })
 }
 
 function backendHeaders(headers = {}) {
@@ -47,6 +34,7 @@ class Backend {
    * non-production environments.
    */
   async clearTestData(sbi) {
+    console.log('Backend Endpoint URL: ' + backendUrl())
     const response = await fetch(
       `${backendUrl()}/admin/test-data?sbi=${sbi}&grantCode=${GRANT_CODE}`,
       {

@@ -1,5 +1,15 @@
+import { loadEnvFile } from 'node:process'
 import allure from 'allure-commandline'
+import { resolveBackendUrl } from './test/utils/backend-url.js'
 import { getMochaGrepOptsForEnv, getSpecsForEnv } from './wdio.specs.js'
+
+try {
+  loadEnvFile('.env')
+} catch (error) {
+  if (error.code !== 'ENOENT') {
+    throw error
+  }
+}
 
 const debug = process.env.DEBUG
 const oneMinute = 60 * 1000
@@ -117,11 +127,7 @@ export const config = {
       : process.env.ENVIRONMENT
         ? `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
         : 'http://localhost:3000'),
-  baseBackendUrl:
-    process.env.BASE_BACKEND_URL ||
-    (process.env.ENVIRONMENT
-      ? `https://grants-ui-backend.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`
-      : 'http://localhost:3001'),
+  baseBackendUrl: resolveBackendUrl(),
   // To run test on your local activate below baseUrls and comment out above baseUrl and baseBackendUrl
   // baseUrl: `http://localhost:3000`,
   // baseBackendUrl: `http://localhost:3001`,
